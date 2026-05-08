@@ -1,0 +1,31 @@
+---
+import Icon from "./Icon.astro";
+import { FAQS } from "@/data/site";
+---
+
+<section class="bg-[#F5F5F5] border-t-4 border-[#C8102E]">
+  <div class="mx-auto max-w-[900px] px-5 lg:px-12 py-20 lg:py-24">
+    <div class="text-center">
+      <div class="font-[Bebas_Neue] text-[20px] uppercase tracking-wider text-[#101010]">Frequently Asked Questions</div>
+      <div class="mx-auto mt-2 mb-6 h-[3px] w-12 bg-[#C8102E]" aria-hidden="true"></div>
+      <h2 class="font-[Bebas_Neue] text-[40px] sm:text-[44px] lg:text-[48px] leading-[1.08] uppercase font-medium text-[#1D1D1D]">
+        Got Questions? We've Got Answers
+      </h2>
+    </div>
+
+    <div class="mt-12 space-y-3">
+      {FAQS.map((faq, i) => (
+        <details class="bg-white group border-l-4 border-[#C8102E]" open={i === 0}>
+          <summary class="w-full flex items-center justify-between gap-6 px-6 py-5 text-left">
+            <span class="font-[Bebas_Neue] text-[20px] sm:text-[22px] uppercase text-[#1D1D1D]">{faq.question}</span>
+            <span class="faq-icon-wrap flex h-8 w-8 shrink-0 items-center justify-center text-white bg-[#1D1D1D]">
+              <span class="faq-icon-plus"><Icon name="plus" class="h-4 w-4" /></span>
+              <span class="faq-icon-minus"><Icon name="minus" class="h-4 w-4" /></span>
+            </span>
+          </summary>
+          <div class="px-6 pb-6 -mt-1 text-[16px] leading-[28px] text-[#7A7A7A]" set:html={faq.answer} />
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

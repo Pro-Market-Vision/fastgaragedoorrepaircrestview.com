@@ -1,0 +1,44 @@
+---
+interface Crumb {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  items: Crumb[];
+}
+
+const { items } = Astro.props as Props;
+
+// JSON-LD BreadcrumbList, emitted next to the visual nav so each page that
+// includes <Breadcrumbs/> gets the structured data automatically.
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: items.map((c, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: c.label,
+    ...(c.href ? { item: `https://fastgaragedoorrepaircrestview.com${c.href}` } : {}),
+  })),
+};
+---
+
+<nav aria-label="Breadcrumb" class="bg-[#0F1117] border-b border-white/10">
+  <div class="mx-auto max-w-[1240px] px-5 lg:px-12 py-3">
+    <ol class="flex flex-wrap items-center gap-x-2 gap-y-1 text-[13px] font-[Roboto] text-white/70">
+      {items.map((c, i) => (
+        <li class="flex items-center gap-2">
+          {c.href && i < items.length - 1 ? (
+            <a href={c.href} class="hover:text-white transition-colors">{c.label}</a>
+          ) : (
+            <span class="text-white" aria-current={i === items.length - 1 ? "page" : undefined}>{c.label}</span>
+          )}
+          {i < items.length - 1 && <span class="text-white/40" aria-hidden="true">/</span>}
+        </li>
+      ))}
+    </ol>
+  </div>
+</nav>
+
+<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />

@@ -1,0 +1,21 @@
+---
+interface Props {
+  title: string;
+  kicker?: string;
+  bgImage?: string;
+}
+const { title, kicker, bgImage = "/images/inner-hero-banner.jpg" } = Astro.props;
+---
+
+<section class="relative isolate overflow-hidden">
+  <div class="absolute inset-0 -z-20 bg-cover bg-center" style={`background-image:url('${bgImage}')`}></div>
+  <div class="absolute inset-0 -z-10 bg-[#C8102E]/60"></div>
+  <div class="mx-auto max-w-[1240px] px-5 lg:px-12 py-[120px] text-center text-white">
+    {kicker && (
+      <div class="font-[Bebas_Neue] text-[16px] uppercase tracking-[0.18em] text-white/80">{kicker}</div>
+    )}
+    <h1 class={`font-[Bebas_Neue] text-[48px] sm:text-[64px] lg:text-[75px] leading-[1.05] uppercase font-medium ${kicker ? "mt-4" : ""}`}>
+      {title}
+    </h1>
+  </div>
+</section>

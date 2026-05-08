@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fastgaragedoorrepaircrestview.com/sitemap-index.xml

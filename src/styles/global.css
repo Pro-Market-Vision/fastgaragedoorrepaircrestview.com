@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Bebas Neue", "Roboto", sans-serif;
+  --font-slab: "Roboto Slab", serif;
+
+  --color-brand: #C8102E;
+  --color-brand-dark: #9A0A23;
+  --color-ink: #1d1d1d;
+  --color-ink-soft: #4d4d4d;
+  --color-ink-mute: #7a7a7a;
+}
+
+html {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  color: var(--color-ink-soft);
+  background-color: #ffffff;
+  font-weight: 500;
+}
+
+/* Make body copy slightly bolder and darker for legibility across all sections */
+p,
+li,
+blockquote,
+figcaption,
+summary span,
+details > div {
+  font-weight: 500;
+}
+
+/* Hero crossfade slideshow, top layer fades in/out over banner-1 */
+@keyframes heroFade {
+  0%,
+  45% {
+    opacity: 0;
+  }
+  50%,
+  95% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.hero-fade {
+  animation: heroFade 10s ease-in-out infinite;
+}
+
+/* Accordion content reveal */
+details > summary {
+  list-style: none;
+  cursor: pointer;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+details[open] .faq-icon-plus {
+  display: none;
+}
+details:not([open]) .faq-icon-minus {
+  display: none;
+}
+details[open] .faq-icon-wrap {
+  background-color: #C8102E;
+}
+
+/* Prevent iOS Safari focus-zoom on form fields. Inputs must be >=16px. */
+input,
+select,
+textarea {
+  font-size: 16px;
+}
+@media (max-width: 640px) {
+  input[type="text"],
+  input[type="tel"],
+  input[type="email"],
+  input[type="search"],
+  input[type="number"],
+  input[type="url"],
+  input[type="password"],
+  input:not([type]),
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}

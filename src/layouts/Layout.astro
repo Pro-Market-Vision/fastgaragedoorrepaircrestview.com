@@ -1,0 +1,135 @@
+---
+import "../styles/global.css";
+import { COMPANY, PHONE_DISPLAY, PHONE_TEL, LOCATIONS } from "@/data/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  ogImage?: string;
+  ogType?: "website" | "article";
+  noindex?: boolean;
+  schema?: Record<string, any> | Record<string, any>[];
+}
+
+const SITE_URL = "https://fastgaragedoorrepaircrestview.com";
+const DEFAULT_TITLE = "Door Repair & Window Services | Fast Garage Door Repair & Service Crestview";
+const DEFAULT_DESCRIPTION = "Fast Garage Door Repair & Service Crestview specializes in garage door installation, repair, and replacement across Crestview and Okaloosa County. Free estimates. Call (850) 920-2243.";
+const DEFAULT_OG_IMAGE = "/images/hero-banner-1.jpg";
+
+const {
+  title = DEFAULT_TITLE,
+  description = DEFAULT_DESCRIPTION,
+  canonical,
+  ogImage = DEFAULT_OG_IMAGE,
+  ogType = "website",
+  noindex = false,
+  schema,
+} = Astro.props;
+
+const pathname = Astro.url.pathname.endsWith("/") || Astro.url.pathname.includes(".")
+  ? Astro.url.pathname
+  : Astro.url.pathname + "/";
+const canonicalUrl = canonical || `${SITE_URL}${pathname}`;
+const absoluteOgImage = ogImage.startsWith("http") ? ogImage : `${SITE_URL}${ogImage}`;
+
+// Default LocalBusiness schema, always present site-wide
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": `${SITE_URL}/#business`,
+  name: COMPANY,
+  description: DEFAULT_DESCRIPTION,
+  url: SITE_URL,
+  telephone: PHONE_DISPLAY,
+  image: `${SITE_URL}${DEFAULT_OG_IMAGE}`,
+  priceRange: "$$",
+  areaServed: LOCATIONS.map((l) => ({
+    "@type": "City",
+    name: l.name,
+    containedInPlace: { "@type": "State", name: "Florida" },
+  })),
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "1455 S Ferdon Blvd D4",
+    addressLocality: "Crestview",
+    addressRegion: "FL",
+    postalCode: "32536",
+    addressCountry: "US",
+  },
+  hasMap: "https://maps.google.com/maps?cid=4382157912592646255",
+  sameAs: ["https://maps.google.com/maps?cid=4382157912592646255"],
+};
+
+const schemaBlocks = schema
+  ? Array.isArray(schema)
+    ? [localBusinessSchema, ...schema]
+    : [localBusinessSchema, schema]
+  : [localBusinessSchema];
+---
+
+<!doctype html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {!noindex && <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />}
+    <meta name="theme-color" content="#C8102E" />
+    <meta name="format-detection" content="telephone=yes" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={COMPANY} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={absoluteOgImage} />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={absoluteOgImage} />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/seo/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/seo/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/seo/favicon-192.png" />
+    <link rel="apple-touch-icon" href="/seo/apple-touch-icon.png" />
+
+    <!-- Sitemap -->
+    <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+
+    <!-- Preload LCP hero image -->
+    <link rel="preload" as="image" href="/images/hero-banner-1.jpg" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@300;400;500;700;900&family=Roboto+Slab:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- DNS Prefetch -->
+    <link rel="dns-prefetch" href="https://www.google.com" />
+
+    <!-- Structured Data -->
+    {schemaBlocks.map((block) => (
+      <script type="application/ld+json" set:html={JSON.stringify(block)} />
+    ))}
+
+    <!-- Universal Form Handler: same-origin /api/contact (Bonita/Titusville pattern) -->
+    <script is:inline defer src="/form-handler.js"></script>
+
+  </head>
+  <body class="min-h-full flex flex-col">
+    <slot />
+  </body>
+</html>

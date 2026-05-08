@@ -1,0 +1,32 @@
+{
+  "garage-door-spring-repair": {
+    "h1": "Garage Door Spring Repair in Crestview, FL",
+    "intro": "A broken garage door spring is one of the most common and most dangerous problems homeowners face. The springs carry the weight of the door, so when one snaps, the door becomes unsafe to lift, slams shut, or refuses to open at all. At Fast Garage Door Repair & Service Crestview, we replace torsion and extension springs the same day, with springs sized correctly for your door so it stays balanced and your opener doesn't burn out prematurely.",
+    "secondParagraph": "Our trucks carry the most common torsion spring sizes for residential doors in Crestview, Niceville, Baker, Laurel Hill, and the rest of Okaloosa County, so most spring repairs are wrapped up in a single visit. We always replace springs in pairs (even if only one broke) because the unbroken spring is at the end of its life cycle too. Replacing one and leaving the other often guarantees you'll be calling someone back within months. We quote upfront and offer free estimates on every repair."
+  },
+  "garage-door-opener-repair": {
+    "h1": "Garage Door Opener Repair in Crestview, FL",
+    "intro": "When your opener stops working, the cause could be anything from a sensor to a fried logic board to a stripped main gear. We diagnose openers the right way: testing power, sensors, limits, force settings, and the drive mechanism before we recommend any parts. Most of the time the fix is far cheaper than replacing the whole opener.",
+    "secondParagraph": "We service every major brand: LiftMaster, Chamberlain, Genie, Craftsman, Linear, Sommer, Marantec, Liftronic, and more. Common repairs include logic board replacement after lightning strikes (a regular issue in Florida summers), photo-eye sensor alignment, drive gear and belt replacement, capacitor swaps, limit switch resets, remote and keypad reprogramming, and Wi-Fi/MyQ setup. If your opener is past saving, we'll tell you straight and quote a new install, but we always try the repair first. Shopping for a replacement? Read our <a href='/blog/best-garage-door-openers-2026/' class='text-[#C8102E] font-semibold hover:underline'>2026 garage door opener buyer's guide</a>. Free estimates on every visit."
+  },
+  "garage-door-keypad-repair": {
+    "h1": "Garage Door Keypad Repair in Crestview, FL",
+    "intro": "A garage keypad that won't take your code is more than an annoyance. If you've trained your kids to come home through it after school or you rely on it for contractor access, a dead keypad means someone is locked out. We repair and replace exterior wireless keypads for every major opener brand and reprogram the codes so your old PINs work just like before.",
+    "secondParagraph": "Common keypad issues in Crestview homes: corroded battery contacts from humidity, sun-damaged keypad membranes where the buttons stop responding, dead 9V batteries (more common than you'd think), and pairing issues after a logic board swap. We carry universal replacement keypads compatible with LiftMaster, Chamberlain, Genie, and Linear so we can usually fix it on the first visit, even if your original keypad is discontinued. Free estimates on every job."
+  },
+  "garage-door-installation": {
+    "h1": "Garage Door Installation in Crestview, FL",
+    "intro": "Whether you're replacing a beat-up old door, finishing a new build, or upgrading to insulated steel for the heat and humidity, we install garage doors that are sized right, sealed properly, and balanced so your opener does less work and lasts longer. We carry Clopay, Amarr, Wayne Dalton, and CHI doors in steel, aluminum, and faux-wood finishes with insulated and non-insulated options to fit attached and detached garages.",
+    "secondParagraph": "Every install includes proper jamb and header prep, new bottom seal and weatherstripping, balanced torsion spring sizing for the door's weight, fresh rollers and hinges, and a safety inspection of the opener and reversing system. We pull permits where required, coordinate with HOAs in communities like Foxwood and Antioch when needed, and clean up after ourselves so your driveway looks like we were never there. Free in-home estimate on every install."
+  },
+  "commercial-garage-door-services": {
+    "h1": "Commercial Garage Door Services in Crestview, FL",
+    "intro": "Commercial overhead doors take far more cycles than residential. A busy auto shop or warehouse can run a single door 50+ times a day, which means worn springs, frayed cables, bent tracks, and burned-out openers happen on a much faster timeline. Fast Garage Door Repair & Service Crestview keeps Okaloosa County businesses running with same-day commercial repairs, scheduled preventive maintenance, and full installations of rolling steel, sectional, and high-speed commercial doors.",
+    "secondParagraph": "We work on shop doors, fleet bays, warehouse loading docks, storefront roll-up grilles, and high-cycle commercial openers from LiftMaster, Manaras, and similar industrial brands. Maintenance contracts are available for facilities with multiple doors. We'll set a regular cadence (monthly or quarterly), inspect every door, replace worn parts before they fail, and keep records so audits and insurance reviews are easy. Call <a href='tel:+18509202243' class='text-[#C8102E] font-semibold hover:underline'>(850) 920-2243</a> for a free commercial estimate."
+  },
+  "emergency-garage-door-services": {
+    "h1": "24/7 Emergency Garage Door Repair in Crestview, FL",
+    "intro": "A snapped spring at 6 AM when you're trying to get to work, a door that won't close on a stormy night, a vehicle stuck inside the garage. These aren't problems that wait until business hours. We answer the phone day, night, weekends, and holidays, and dispatch a tech with the parts to actually fix the issue, not just tarp it and reschedule.",
+    "secondParagraph": "Most emergency calls fall into a handful of buckets: broken torsion spring (door won't lift), snapped lift cable (door is crooked or jammed), off-track door (panels separated from the rails), stuck-open opener (security risk overnight), and storm damage (panels dented from debris). All five are repairs we handle on the truck for residential and most light-commercial doors. Call <a href='tel:+18509202243' class='text-[#C8102E] font-semibold hover:underline'>(850) 920-2243</a> any time, free on-site estimate before any work."
+  }
+}

@@ -1,0 +1,18 @@
+---
+const STATS = [
+  { value: "1,000+", label: "Projects Completed" },
+  { value: "97%", label: "Referral Rate" },
+  { value: "10+", label: "Years Delivering Quality" },
+];
+---
+
+<section class="bg-white border-y-4 border-[#C8102E]">
+  <div class="mx-auto max-w-[1240px] px-5 lg:px-12 py-12 grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-[#C8102E]/30">
+    {STATS.map((s) => (
+      <div class="flex flex-col items-center justify-center text-center py-6 sm:py-2">
+        <div class="font-[Bebas_Neue] text-[64px] leading-none text-[#C8102E]">{s.value}</div>
+        <div class="mt-2 text-[14px] font-medium uppercase tracking-[0.06em] text-[#1D1D1D]">{s.label}</div>
+      </div>
+    ))}
+  </div>
+</section>

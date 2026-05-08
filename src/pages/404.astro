@@ -1,0 +1,55 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import SiteFooter from "@/components/SiteFooter.astro";
+import PrimaryButton from "@/components/PrimaryButton.astro";
+import Icon from "@/components/Icon.astro";
+import { PHONE_DISPLAY, PHONE_TEL, SERVICE_CATEGORIES } from "@/data/site";
+
+const popularServices = SERVICE_CATEGORIES.flatMap((c) => c.services).slice(0, 6);
+---
+
+<Layout
+  title="Page Not Found | Fast Garage Door Repair Crestview"
+  description="That page does not exist. Browse our Crestview, FL garage door services or call for a same-day free estimate across Okaloosa County."
+  noindex={true}
+>
+  <SiteHeader />
+  <main class="flex-1 bg-white">
+    <section class="mx-auto max-w-[900px] px-5 lg:px-12 py-20 lg:py-28 text-center">
+      <div class="font-[Bebas_Neue] text-[140px] sm:text-[180px] leading-none text-[#C8102E]">404</div>
+      <h1 class="mt-2 font-[Bebas_Neue] text-[42px] sm:text-[56px] leading-[1.05] text-[#1D1D1D] uppercase">
+        Page Not Found
+      </h1>
+      <p class="mt-6 max-w-[600px] mx-auto font-[Roboto] text-[16px] leading-[28px] text-[#7A7A7A]">
+        The page you were looking for has moved, been renamed, or no longer exists. Don't worry, we can still help with your garage door needs. Call us directly or browse our most popular services below.
+      </p>
+
+      <div class="mt-8 flex flex-wrap justify-center gap-4">
+        <PrimaryButton href={`tel:${PHONE_TEL}`} variant="solid">
+          <Icon name="phone" class="h-4 w-4" />
+          {PHONE_DISPLAY}
+        </PrimaryButton>
+        <PrimaryButton href="/">Back to Home</PrimaryButton>
+      </div>
+
+      <div class="mt-16 text-left">
+        <h2 class="font-[Bebas_Neue] text-[28px] uppercase text-[#101010] text-center mb-8">
+          Popular Services
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {popularServices.map((s) => (
+            <a
+              href={s.href}
+              class="block bg-[#F5F5F5] px-5 py-4 font-[Bebas_Neue] text-[18px] text-[#1D1D1D] rounded-full border-2 border-[#E5E5E5] hover:bg-[#C8102E] hover:text-white hover:border-[#C8102E] transition-colors"
+            >
+              <span class="text-[#C8102E] group-hover:text-white" aria-hidden="true">▸</span>
+              {s.title}
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+  <SiteFooter />
+</Layout>

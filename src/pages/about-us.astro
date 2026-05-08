@@ -1,0 +1,135 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import InnerHero from "@/components/InnerHero.astro";
+import Breadcrumbs from "@/components/Breadcrumbs.astro";
+import ServicesSection from "@/components/ServicesSection.astro";
+import CtaBannerSection from "@/components/CtaBannerSection.astro";
+import FaqSection from "@/components/FaqSection.astro";
+import ContactSection from "@/components/ContactSection.astro";
+import SiteFooter from "@/components/SiteFooter.astro";
+import PrimaryButton from "@/components/PrimaryButton.astro";
+import Icon from "@/components/Icon.astro";
+import ServiceAreaSection from "@/components/ServiceAreaSection.astro";
+import pagesContent from "@/data/pages-content.json";
+import { PHONE_DISPLAY, PHONE_TEL } from "@/data/site";
+
+const page = (pagesContent as Record<string, any>)["about-us"];
+const aboutSection = page.sections.find((s: any) => /Crestview's Trusted Garage Door Specialists|Your Trusted Experts/.test(s.heading));
+// Strip stat-style lines (e.g., "1,000+ Projects Completed", "10+ Years delivering Quality")
+// since those numbers are already shown in the dedicated stats strip below this section.
+const aboutParagraphs: string[] = (aboutSection?.intro || []).filter(
+  (p: string) => !/^\s*[\d,]+\+?%?\s+/.test(p)
+);
+
+const STATS = [
+  { value: "1,000+", label: "Projects Completed" },
+  { value: "97%", label: "Referral Rate" },
+  { value: "10+", label: "Years delivering Quality" },
+];
+
+const VALUES = [
+  {
+    title: "Affordable, Transparent Pricing",
+    body: 'We believe great service shouldn\'t come with hidden costs. That\'s why we provide <a href="/contact-us/" class="text-[#C8102E] font-semibold hover:underline">free, no-obligation estimates</a> for all our services.',
+  },
+  {
+    title: "Skilled & Friendly Technicians",
+    body: 'Our experienced team handles everything from <a href="/service/garage-door-spring-repair/" class="text-[#C8102E] font-semibold hover:underline">spring repair</a> to <a href="/service/garage-door-installation/" class="text-[#C8102E] font-semibold hover:underline">new door installation</a> with care and respect for your property.',
+  },
+  {
+    title: "Warranty-Backed Workmanship",
+    body: "We stand by what we do. All services are backed by solid warranties, giving you confidence and peace of mind.",
+  },
+  {
+    title: "Fast Response, Local Support",
+    body: 'Based on S Ferdon Blvd in Crestview, we know Okaloosa County door systems inside and out. <a href="/location/crestview/" class="text-[#C8102E] font-semibold hover:underline">View our service area</a> or browse all <a href="/#services" class="text-[#C8102E] font-semibold hover:underline">our services</a>.',
+  },
+];
+---
+
+<Layout
+  title="About Fast Garage Door Repair Crestview | Local Garage Door Experts"
+  description="Meet the team at Fast Garage Door Repair & Service Crestview. Local Crestview shop, licensed techs, same-day service, free estimates across Okaloosa County, FL."
+>
+  <SiteHeader />
+  <main class="flex-1">
+    <InnerHero title={page?.h1 || "About Us"} />
+    <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "About Us" }]} />
+
+    {/* Section 1, About copy: image LEFT (about-sliding-doors), text RIGHT */}
+    <section class="bg-white">
+      <div class="mx-auto max-w-[1200px] px-5 lg:px-12 py-20 lg:py-24 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+        <div class="lg:col-span-6">
+          <img src="/images/about-sliding-doors.jpg" alt="Fast Garage Door Repair &amp; Service Crestview installations" width="952" height="1024" loading="lazy" decoding="async" class="w-full h-auto" />
+        </div>
+        <div class="lg:col-span-6">
+          <h2 class="font-[Bebas_Neue] text-[42px] sm:text-[50px] lg:text-[55px] leading-[1] text-[#333333] font-medium">
+            Crestview's Trusted Garage Door Specialists
+          </h2>
+          {aboutParagraphs.map((p) => (
+            <p class="mt-6 font-[Roboto] text-[16px] leading-[26px] text-[#4D4D4D]">{p}</p>
+          ))}
+          <div class="mt-6 flex flex-wrap gap-4">
+            <PrimaryButton href={`tel:${PHONE_TEL}`} variant="solid">
+              <Icon name="phone" class="h-4 w-4" />
+              {PHONE_DISPLAY}
+            </PrimaryButton>
+            <PrimaryButton href="#contact">Free Estimate</PrimaryButton>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Section 2, Stats strip */}
+    <section class="bg-white border-y border-[#E5E5E5]">
+      <div class="mx-auto max-w-[1200px] px-5 lg:px-12 py-12 grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-[#E5E5E5]">
+        {STATS.map((s) => (
+          <div class="flex flex-col items-center justify-center text-center py-6 sm:py-2">
+            <div class="font-[Bebas_Neue] text-[60px] leading-none text-[#C8102E]">{s.value}</div>
+            <div class="mt-2 font-[Roboto] text-[14px] font-medium uppercase tracking-[0.06em] text-[#1D1D1D]">{s.label}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    {/* Section 3, Why Choose Us: image LEFT (about-top-notch), text + 4 cards RIGHT, same heading */}
+    <section class="bg-white">
+      <div class="mx-auto max-w-[1200px] px-5 lg:px-12 py-20 lg:py-24 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+        <div class="lg:col-span-6">
+          <img src="/images/about-top-notch.jpg" alt="Fast Garage Door Repair &amp; Service Crestview team" width="952" height="1024" loading="lazy" decoding="async" class="w-full h-auto" />
+        </div>
+        <div class="lg:col-span-6">
+          <h2 class="font-[Bebas_Neue] text-[42px] sm:text-[50px] lg:text-[55px] leading-[1] text-[#333333] font-medium">
+            Why Choose Fast Garage Door Repair & Service Crestview
+          </h2>
+          <div class="mt-6 space-y-5">
+            {VALUES.map((v) => (
+              <div>
+                <h3 class="font-[Bebas_Neue] text-[22px] text-[#1D1D1D]">
+                  {v.title} <span class="font-[Roboto] text-[16px] font-normal text-[#4D4D4D]" set:html={` &ndash; ${v.body}`} />
+                </h3>
+              </div>
+            ))}
+          </div>
+          <div class="mt-8 flex flex-wrap gap-4">
+            <PrimaryButton href={`tel:${PHONE_TEL}`} variant="solid">
+              <Icon name="phone" class="h-4 w-4" />
+              {PHONE_DISPLAY}
+            </PrimaryButton>
+            <PrimaryButton href="#contact">Free Estimate</PrimaryButton>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <CtaBannerSection />
+    <ServicesSection />
+
+    <ServiceAreaSection variant="dark" />
+
+    <FaqSection />
+    <ContactSection />
+  </main>
+  <SiteFooter />
+</Layout>

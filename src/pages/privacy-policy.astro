@@ -1,0 +1,73 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import InnerHero from "@/components/InnerHero.astro";
+import Breadcrumbs from "@/components/Breadcrumbs.astro";
+import SiteFooter from "@/components/SiteFooter.astro";
+import { COMPANY, PHONE_DISPLAY } from "@/data/site";
+---
+
+<Layout
+  title="Privacy Policy | Fast Garage Door Repair Crestview"
+  description="How Fast Garage Door Repair & Service Crestview collects, uses, and protects your personal information. Local garage door company serving Okaloosa County, FL."
+>
+  <SiteHeader />
+  <main class="flex-1">
+    <InnerHero title="Privacy Policy" />
+    <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Privacy Policy" }]} />
+
+    <section class="bg-white">
+      <div class="mx-auto max-w-[820px] px-5 lg:px-12 py-16 lg:py-20 prose-styles">
+        <p class="text-[14px] text-[#7A7A7A]">Last updated: April 2026</p>
+
+        <h2>Who We Are</h2>
+        <p>Our website address is <strong>https://fastgaragedoorrepaircrestview.com</strong>. We are {COMPANY}, a garage door installation, repair, and replacement company serving Crestview and Okaloosa County.</p>
+
+        <h2>Information We Collect</h2>
+        <p>When you fill out a contact form on our site, we collect the information you provide, including your name, email address, phone number, and message. This information is used solely to respond to your inquiry and provide the services you request.</p>
+        <p>We do not sell, rent, or share your personal information with third parties except as necessary to process your request (e.g., our form processing service Web3Forms and our CRM integration via Zapier).</p>
+
+        <h2>Cookies</h2>
+        <p>Our site uses cookies for basic functionality. Third-party services embedded on our site, including Google reCAPTCHA, may also set cookies. These are used for spam prevention and security purposes.</p>
+
+        <h2>Google reCAPTCHA</h2>
+        <p>We use Google reCAPTCHA v3 to protect our forms from spam and abuse. By using our site, you agree to Google's <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" class="text-[#C8102E] hover:underline">Privacy Policy</a> and <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" class="text-[#C8102E] hover:underline">Terms of Service</a>.</p>
+
+        <h2>Embedded Content</h2>
+        <p>Pages on this site may include embedded content (e.g., images, maps). Embedded content from other websites behaves in the same way as if the visitor visited those websites directly.</p>
+
+        <h2>How Long We Retain Your Data</h2>
+        <p>Form submission data is retained only as long as needed to respond to your inquiry and provide requested services. You may request deletion of your data at any time by contacting us.</p>
+
+        <h2>Your Rights</h2>
+        <p>You have the right to request access to your personal data, correction of inaccurate data, or deletion of your data. To exercise these rights, contact us using the information below.</p>
+
+        <h2>Contact Us</h2>
+        <p>If you have any questions about this privacy policy, contact us at:</p>
+        <p><strong>{COMPANY}</strong><br />Phone: <a href="tel:+18509202243" class="text-[#C8102E] hover:underline">{PHONE_DISPLAY}</a><br />Website: <a href="/contact-us/" class="text-[#C8102E] hover:underline">fastgaragedoorrepaircrestview.com/contact-us</a></p>
+      </div>
+    </section>
+  </main>
+  <SiteFooter />
+</Layout>
+
+<style>
+  .prose-styles h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    line-height: 1.1;
+    color: #1D1D1D;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    border-left: 4px solid #C8102E;
+    padding-left: 0.75rem;
+  }
+  .prose-styles p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    line-height: 28px;
+    color: #4D4D4D;
+    margin-top: 0.75rem;
+  }
+</style>

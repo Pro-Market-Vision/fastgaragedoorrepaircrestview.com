@@ -1,0 +1,75 @@
+---
+import Icon from "./Icon.astro";
+import { ALL_SERVICES, PHONE_DISPLAY as DEFAULT_PHONE_DISPLAY, PHONE_TEL as DEFAULT_PHONE_TEL } from "@/data/site";
+
+interface Props {
+  phoneDisplay?: string;
+  phoneTel?: string;
+}
+
+const { phoneDisplay = DEFAULT_PHONE_DISPLAY, phoneTel = DEFAULT_PHONE_TEL } = Astro.props;
+const PHONE_DISPLAY = phoneDisplay;
+const PHONE_TEL = phoneTel;
+---
+
+<section id="services" class="bg-[#F5F5F5] border-t-4 border-[#C8102E]">
+  <div class="mx-auto max-w-[1240px] px-5 lg:px-12 py-20 lg:py-24">
+    <div class="text-center max-w-[900px] mx-auto">
+      <div class="font-[Bebas_Neue] text-[20px] uppercase tracking-wider text-[#101010]">Our Wide Range of Services</div>
+      <div class="mx-auto mt-2 mb-6 h-[3px] w-12 bg-[#C8102E]" aria-hidden="true"></div>
+      <h2 class="font-[Bebas_Neue] text-[44px] sm:text-[52px] lg:text-[56px] leading-[1.05] uppercase font-medium text-[#1D1D1D]">
+        Our Services
+      </h2>
+      <p class="mt-6 text-[16px] leading-[28px] text-[#7A7A7A]">
+        From snapped torsion springs and dead openers to brand-new garage door installations and 24/7 emergency response, we handle everything that moves overhead in Crestview and the rest of Okaloosa County. Residential, commercial, every major brand. Quality work, honest prices, and free estimates on every job.
+      </p>
+    </div>
+
+    <div class="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 auto-rows-fr gap-6">
+      {ALL_SERVICES.map((service) => (
+        <article class="group bg-white shadow-[0_4px_16px_rgba(0,0,0,0.05)] transition-shadow hover:shadow-[0_12px_28px_rgba(0,0,0,0.12)] flex flex-col">
+          <div class="relative aspect-[3/2] w-full overflow-hidden">
+            <img src={service.image} alt={service.title} class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+          </div>
+          <div class="p-6 flex flex-col flex-1">
+            <h3 class="font-[Bebas_Neue] text-[24px] leading-[1.1] text-[#1D1D1D]">{service.title}</h3>
+            <a href={service.href} class="mt-auto pt-4 inline-flex items-center gap-2 text-[13px] font-medium uppercase tracking-wider text-[#C8102E] hover:gap-3 transition-all">
+              Read More
+              <Icon name="arrow-right" class="h-3 w-3" />
+            </a>
+          </div>
+        </article>
+      ))}
+
+      {/* CTA tile, spans 2 columns to fill the 15th + 16th slot in the 4×4 grid */}
+      <article class="sm:col-span-2 lg:col-span-2 bg-[#C8102E] text-white shadow-[0_4px_16px_rgba(0,0,0,0.05)] flex flex-col p-8 border-2 border-[#9A0A23]">
+        <div class="flex-1">
+          <div class="font-[Bebas_Neue] text-[18px] uppercase tracking-[0.18em] text-white/90">Need Help Choosing?</div>
+          <div class="mt-2 mb-5 h-[3px] w-12 bg-white" aria-hidden="true"></div>
+          <h3 class="font-[Bebas_Neue] text-[26px] sm:text-[30px] leading-[1.1] uppercase">
+            Get Your Free Estimate Today
+          </h3>
+          <p class="mt-3 text-[14px] leading-[22px] text-white/90">
+            Not sure which service you need? Call our team or send us a message, we'll guide you to the right solution for your home or business.
+          </p>
+        </div>
+        <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <a
+            href={`tel:${PHONE_TEL}`}
+            class="flex items-center justify-center gap-2 bg-white text-[#C8102E] py-3 px-3 font-[Bebas_Neue] text-[16px] tracking-[0.08em] rounded-full border-2 border-white hover:bg-transparent hover:text-white transition-colors whitespace-nowrap"
+          >
+            <Icon name="phone" class="h-4 w-4" />
+            {PHONE_DISPLAY}
+          </a>
+          <a
+            href="#contact"
+            class="flex items-center justify-center gap-2 bg-transparent text-white py-3 px-3 font-[Bebas_Neue] text-[16px] tracking-[0.08em] rounded-full border-2 border-white hover:bg-white hover:text-[#C8102E] transition-colors whitespace-nowrap"
+          >
+            Contact Form
+            <Icon name="arrow-right" class="h-3 w-3" />
+          </a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>

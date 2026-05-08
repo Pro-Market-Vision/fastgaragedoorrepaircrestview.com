@@ -1,0 +1,183 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import InnerHero from "@/components/InnerHero.astro";
+import Breadcrumbs from "@/components/Breadcrumbs.astro";
+import ServicesSection from "@/components/ServicesSection.astro";
+import CtaBannerSection from "@/components/CtaBannerSection.astro";
+import TestimonialsSection from "@/components/TestimonialsSection.astro";
+import FaqSection from "@/components/FaqSection.astro";
+import ContactSection from "@/components/ContactSection.astro";
+import SiteFooter from "@/components/SiteFooter.astro";
+import Icon from "@/components/Icon.astro";
+import InternalLinksBlock from "@/components/InternalLinksBlock.astro";
+import { LOCATIONS, ALL_SERVICES, LOCATION_TESTIMONIALS } from "@/data/site";
+import pagesContent from "@/data/pages-content.json";
+
+export function getStaticPaths() {
+  return LOCATIONS.map((loc) => ({ params: { slug: loc.slug }, props: { loc } }));
+}
+
+const { loc } = Astro.props;
+const page = (pagesContent as Record<string, any>)[`loc-${loc.slug}`];
+const aboutSection = page?.sections.find((s: any) => s.heading.startsWith("Discover"));
+const aboutParagraphs: string[] = aboutSection?.intro || [];
+const heroH1: string = page?.h1 || `Door Repair & Window Repair Solutions in ${loc.name}`;
+
+// Auto-link phone numbers in text: (XXX) XXX-XXXX → clickable tel: link
+function linkPhones(text: string): string {
+  return text.replace(
+    /\((\d{3})\)\s*(\d{3})-(\d{4})/g,
+    (match, a, b, c) => `<a href="tel:+1${a}${b}${c}" class="text-[#C8102E] font-semibold hover:underline">${match}</a>`
+  );
+}
+
+const seoTitle = `Garage Door Repair ${loc.name}, ${loc.state} | Free Estimates & Same-Day Service`;
+const seoDescription = `Same-day garage door spring, opener, and emergency repair in ${loc.name}, ${loc.state}. Local techs, free estimates, 24/7 service. Call ${loc.phoneDisplay} today.`;
+
+const otherLocations = LOCATIONS.filter((l) => l.slug !== loc.slug);
+const otherLocationLinks = otherLocations.map((l) => ({
+  href: `/location/${l.slug}/`,
+  label: `${l.name}, ${l.state}`,
+  description: `Garage door repair and installation in ${l.name}, ${l.state}.`,
+}));
+
+// Top services to feature on location pages, covers the main categories
+const topServiceSlugs = [
+  "garage-door-spring-repair",
+  "garage-door-opener-repair",
+  "garage-door-installation",
+  "garage-door-keypad-repair",
+  "commercial-garage-door-services",
+  "emergency-garage-door-services",
+];
+const featuredServiceLinks = ALL_SERVICES
+  .filter((s) => topServiceSlugs.includes(s.slug))
+  .map((s) => ({
+    href: s.href,
+    label: `${s.title} in ${loc.name}`,
+    description: `Expert ${s.title.toLowerCase()} for ${loc.name}, ${loc.state} homes & businesses.`,
+  }));
+
+const locationTestimonials = LOCATION_TESTIMONIALS[loc.slug] || [];
+
+const placeSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: `Fast Garage Door Repair & Service Crestview, ${loc.name}`,
+  telephone: loc.phoneDisplay,
+  url: `https://fastgaragedoorrepaircrestview.com/location/${loc.slug}/`,
+  areaServed: { "@type": "City", name: loc.name },
+  ...(loc.address ? { address: { "@type": "PostalAddress", streetAddress: loc.address, addressLocality: loc.name, addressRegion: loc.state, addressCountry: "US" } } : {}),
+};
+---
+
+<Layout
+  title={seoTitle}
+  description={seoDescription}
+  schema={placeSchema}
+>
+  <SiteHeader />
+  <main class="flex-1">
+    <InnerHero title={heroH1} kicker={`Serving ${loc.name}, ${loc.state}`} />
+    <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Service Areas", href: "/#service-areas" }, { label: `${loc.name}, ${loc.state}` }]} />
+
+    <section class="bg-white">
+      <div class="mx-auto max-w-[1240px] px-5 lg:px-12 py-20 lg:py-24 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div class="lg:col-span-5">
+          <img src="/images/about.jpg" alt={`Garage door services in ${loc.name}`} width="952" height="1024" loading="lazy" decoding="async" class="w-full h-auto" />
+        </div>
+        <div class="lg:col-span-7">
+          <div class="font-[Bebas_Neue] text-[20px] uppercase text-[#101010] tracking-wider">{loc.name}, {loc.state}</div>
+          <div class="mt-2 mb-6 h-[3px] w-12 bg-[#C8102E]" aria-hidden="true"></div>
+          <h2 class="font-[Bebas_Neue] text-[36px] sm:text-[44px] lg:text-[48px] leading-[1.05] uppercase text-[#1D1D1D] font-medium">
+            Crestview's Local Garage Door Specialists
+          </h2>
+          {aboutParagraphs.map((p) => (
+            <p class="mt-6 text-[16px] leading-[28px] text-[#7A7A7A]" set:html={linkPhones(p)} />
+          ))}
+          {loc.address && (
+            <div class="mt-6 inline-flex items-center gap-3 bg-white border-2 border-[#C8102E] rounded-lg px-4 py-3 text-[16px] font-medium text-[#1D1D1D]">
+              <span class="flex h-10 w-10 shrink-0 items-center justify-center bg-[#C8102E] text-white rounded-md">
+                <Icon name="map-pin" class="h-4 w-4" />
+              </span>
+              {loc.address}
+            </div>
+          )}
+          <div class="mt-6">
+            <a
+              href={`tel:${loc.phoneTel}`}
+              class="inline-flex items-center justify-center gap-3 bg-[#C8102E] text-white py-4 px-7 font-[Bebas_Neue] text-[20px] tracking-[0.1em] rounded-full border-2 border-[#C8102E] hover:bg-[#9A0A23] hover:border-[#9A0A23] transition-colors whitespace-nowrap"
+            >
+              <Icon name="phone" class="h-5 w-5" />
+              {loc.phoneDisplay}
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Location-specific SEO content sections */}
+    {loc.seoSections && loc.seoSections.length > 0 && loc.seoSections.map((section, i) => (
+      <section class={i % 2 === 0 ? "bg-[#F8FAFD] border-t-4 border-[#C8102E]" : "bg-white border-t-4 border-[#C8102E]"}>
+        <div class="mx-auto max-w-[1240px] px-5 lg:px-12 py-16 lg:py-20">
+          {i % 3 === 0 ? (
+            <div class="border-l-4 border-[#C8102E] pl-6">
+              <h2 class="font-[Bebas_Neue] text-[32px] sm:text-[40px] lg:text-[44px] leading-[1.08] uppercase text-[#1D1D1D] font-medium">
+                {section.heading}
+              </h2>
+              {section.paragraphs.map((p) => (
+                <p class="mt-5 font-[Roboto] text-[16px] leading-[28px] text-[#4D4D4D]" set:html={linkPhones(p)} />
+              ))}
+            </div>
+          ) : i % 3 === 1 ? (
+            <div class="bg-[#C8102E] text-white rounded-lg p-8 lg:p-12">
+              <h2 class="font-[Bebas_Neue] text-[32px] sm:text-[40px] lg:text-[44px] leading-[1.08] uppercase font-medium">
+                {section.heading}
+              </h2>
+              <div class="mt-3 mb-5 h-[3px] w-12 bg-white" aria-hidden="true"></div>
+              {section.paragraphs.map((p) => (
+                <p class="mt-5 font-[Roboto] text-[16px] leading-[28px] text-white/90 max-w-[900px]" set:html={linkPhones(p).replaceAll('text-[#C8102E]', 'text-white underline')} />
+              ))}
+            </div>
+          ) : (
+            <div class="border-2 border-[#C8102E] rounded-lg p-7 lg:p-10">
+              <h2 class="font-[Bebas_Neue] text-[32px] sm:text-[40px] lg:text-[44px] leading-[1.08] uppercase text-[#1D1D1D] font-medium">
+                {section.heading}
+              </h2>
+              <div class="mt-3 mb-5 h-[3px] w-12 bg-[#C8102E]" aria-hidden="true"></div>
+              {section.paragraphs.map((p) => (
+                <p class="mt-5 font-[Roboto] text-[16px] leading-[28px] text-[#4D4D4D]" set:html={linkPhones(p)} />
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+    ))}
+
+    <InternalLinksBlock
+      kicker={`${loc.name} Services`}
+      heading={`Popular Garage Door Services in ${loc.name}`}
+      intro={`From spring and opener repair to new garage door installs, we serve ${loc.name}, ${loc.state} with same-day appointments and free estimates.`}
+      links={featuredServiceLinks}
+      columns={3}
+    />
+
+    <ServicesSection phoneDisplay={loc.phoneDisplay} phoneTel={loc.phoneTel} />
+    <CtaBannerSection phoneDisplay={loc.phoneDisplay} phoneTel={loc.phoneTel} />
+    <TestimonialsSection testimonials={locationTestimonials} locationName={loc.name} />
+
+    <InternalLinksBlock
+      kicker="Other Service Areas"
+      heading="We Also Serve These Locations"
+      intro="Fast Garage Door Repair & Service Crestview proudly serves homeowners and businesses across Crestview and Okaloosa County."
+      links={otherLocationLinks}
+      columns={3}
+      variant="dark"
+    />
+
+    <FaqSection />
+    <ContactSection phoneDisplay={loc.phoneDisplay} phoneTel={loc.phoneTel} />
+  </main>
+  <SiteFooter />
+</Layout>

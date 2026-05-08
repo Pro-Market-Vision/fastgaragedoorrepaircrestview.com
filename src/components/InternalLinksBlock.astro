@@ -1,0 +1,81 @@
+---
+import Icon from "./Icon.astro";
+
+interface LinkItem {
+  href: string;
+  label: string;
+  description?: string;
+}
+
+interface Props {
+  kicker?: string;
+  heading: string;
+  intro?: string;
+  links: LinkItem[];
+  variant?: "light" | "dark";
+  columns?: 2 | 3 | 4;
+  id?: string;
+}
+
+const {
+  kicker,
+  heading,
+  intro,
+  links,
+  variant = "light",
+  columns = 3,
+  id,
+} = Astro.props;
+
+const sectionBg = variant === "dark" ? "bg-[#0F1117] text-white" : "bg-[#F5F5F5] text-[#1D1D1D]";
+const cardBg = variant === "dark" ? "bg-[#1A1D27] border-[#C8102E]" : "bg-white border-[#C8102E]";
+const cardText = variant === "dark" ? "text-white" : "text-[#1D1D1D]";
+const descColor = variant === "dark" ? "text-white/70" : "text-[#7A7A7A]";
+const introColor = variant === "dark" ? "text-white/80" : "text-[#7A7A7A]";
+
+const colClass: Record<number, string> = {
+  2: "sm:grid-cols-2",
+  3: "sm:grid-cols-2 lg:grid-cols-3",
+  4: "sm:grid-cols-2 lg:grid-cols-4",
+};
+---
+
+{links.length > 0 && (
+<section id={id} class={`${sectionBg} border-t-4 border-[#C8102E]`}>
+  <div class="mx-auto max-w-[1240px] px-5 lg:px-12 py-16 lg:py-20">
+    <div class="max-w-[800px] mx-auto text-center">
+      {kicker && (
+        <div class="font-[Bebas_Neue] text-[18px] uppercase tracking-[0.18em] text-[#C8102E]">
+          {kicker}
+        </div>
+      )}
+      <div class="mx-auto mt-2 mb-5 h-[3px] w-12 bg-[#C8102E]" aria-hidden="true"></div>
+      <h2 class={`font-[Bebas_Neue] text-[32px] sm:text-[40px] lg:text-[44px] leading-[1.08] uppercase font-medium ${cardText}`}>
+        {heading}
+      </h2>
+      {intro && (
+        <p class={`mt-4 text-[16px] leading-[28px] ${introColor} font-medium`}>{intro}</p>
+      )}
+    </div>
+
+    <div class={`mt-10 grid grid-cols-1 ${colClass[columns]} gap-4`}>
+      {links.map((link) => (
+        <a
+          href={link.href}
+          class={`group block ${cardBg} border-l-4 px-6 py-5 rounded-r-lg hover:border-[#9A0A23] hover:shadow-[0_8px_20px_rgba(0,74,173,0.15)] transition-all`}
+        >
+          <div class={`flex items-center justify-between gap-3 font-[Bebas_Neue] text-[20px] uppercase ${cardText}`}>
+            <span class="leading-tight">{link.label}</span>
+            <Icon name="arrow-right" class="h-4 w-4 text-[#C8102E] shrink-0 group-hover:translate-x-1 transition-transform" />
+          </div>
+          {link.description && (
+            <p class={`mt-2 text-[13px] leading-[20px] ${descColor} font-medium`}>
+              {link.description}
+            </p>
+          )}
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+)}

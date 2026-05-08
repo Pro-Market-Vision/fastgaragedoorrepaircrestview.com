@@ -1,0 +1,331 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import InnerHero from "@/components/InnerHero.astro";
+import Breadcrumbs from "@/components/Breadcrumbs.astro";
+import ContactSection from "@/components/ContactSection.astro";
+import SiteFooter from "@/components/SiteFooter.astro";
+import InternalLinksBlock from "@/components/InternalLinksBlock.astro";
+import { COMPANY, PHONE_DISPLAY, PHONE_TEL } from "@/data/site";
+
+const PUBLISH_DATE = "2026-04-15";
+const MODIFIED_DATE = "2026-04-15";
+const TITLE = "Best Garage Door Openers for 2026: Buyer's Guide for Crestview Homeowners";
+const DESCRIPTION = "Compare the best garage door openers for 2026: LiftMaster, Chamberlain, Genie, and more. Smart Wi-Fi features, belt vs chain vs direct-drive, horsepower, security, and what Crestview homeowners actually need.";
+const HERO_IMAGE = "/images/services/garage-door-opener-repair-1.jpg";
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: TITLE,
+  description: DESCRIPTION,
+  image: [`https://fastgaragedoorrepaircrestview.com${HERO_IMAGE}`],
+  datePublished: PUBLISH_DATE,
+  dateModified: MODIFIED_DATE,
+  author: {
+    "@type": "Organization",
+    name: COMPANY,
+    url: "https://fastgaragedoorrepaircrestview.com",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: COMPANY,
+    logo: {
+      "@type": "ImageObject",
+      url: "https://fastgaragedoorrepaircrestview.com/images/logo.png",
+    },
+  },
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://fastgaragedoorrepaircrestview.com/blog/best-garage-door-openers-2026/",
+  },
+  keywords: "best garage door openers 2026, LiftMaster, Chamberlain, Genie, MyQ, smart garage door opener, belt drive opener, garage door opener installation Crestview",
+};
+
+const relatedLinks = [
+  { href: "/service/garage-door-opener-repair/", label: "Garage Door Opener Repair", description: "Same-day opener diagnostics and repair across Crestview." },
+  { href: "/service/garage-door-installation/", label: "New Garage Door Installation", description: "Full door + opener installs with free in-home estimate." },
+  { href: "/service/garage-door-spring-repair/", label: "Garage Door Spring Repair", description: "Broken spring? We replace torsion + extension springs the same day." },
+];
+---
+
+<Layout
+  title="Best Garage Door Openers 2026 | Crestview Buyer's Guide"
+  description={DESCRIPTION}
+  ogImage={HERO_IMAGE}
+  ogType="article"
+  schema={articleSchema}
+>
+  <SiteHeader />
+  <main class="flex-1">
+    <InnerHero title="Best Garage Door Openers for 2026" kicker="Buyer's Guide" />
+    <Breadcrumbs items={[
+      { label: "Home", href: "/" },
+      { label: "Blog", href: "/blog/" },
+      { label: "Best Garage Door Openers for 2026" },
+    ]} />
+
+    <article class="bg-white">
+      <div class="mx-auto max-w-[820px] px-5 lg:px-12 py-12 lg:py-16">
+        {/* Article meta */}
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px] uppercase tracking-[0.12em] text-[#7A7A7A] font-[Bebas_Neue] border-b border-[#E5E5E5] pb-5 mb-8">
+          <span>Published <time datetime={PUBLISH_DATE}>April 15, 2026</time></span>
+          <span aria-hidden="true">·</span>
+          <span>By {COMPANY}</span>
+          <span aria-hidden="true">·</span>
+          <span>~9 min read</span>
+        </div>
+
+        {/* Hero image */}
+        <figure class="mb-10">
+          <img
+            src={HERO_IMAGE}
+            alt="LiftMaster and Chamberlain garage door openers ready for installation in Crestview, FL"
+            width="1200"
+            height="800"
+            loading="eager"
+            decoding="async"
+            fetchpriority="high"
+            class="w-full h-auto rounded-lg shadow-[0_8px_24px_rgba(0,0,0,0.1)]"
+          />
+          <figcaption class="mt-3 text-[13px] leading-[20px] text-[#7A7A7A] text-center">
+            Picking the right opener saves money on repairs, electricity, and frustration over the next decade.
+          </figcaption>
+        </figure>
+
+        {/* Intro / TL;DR */}
+        <p class="text-[18px] leading-[30px] text-[#1D1D1D] font-medium mb-6">
+          Shopping for a new garage door opener in 2026? You're spoiled for choice. Smart Wi-Fi controls are now standard, belt drives have replaced loud chain drives in most quiet-garage installs, and battery backup is finally common across mid-range models. After installing thousands of openers across Crestview, Niceville, Eglin AFB, and the rest of Okaloosa County, here's our straight take on what's worth buying this year, and what's not.
+        </p>
+
+        <p class="text-[16px] leading-[28px] text-[#4D4D4D] mb-10">
+          This guide covers the four main drive types, the best overall picks for residential homes, the best heavy-duty pick for double-car or oversized doors, our quietest-opener pick, and the brands we'd skip. We also cover why Florida humidity and lightning storms matter when you choose, and what to expect for installation in the Crestview area. If you'd rather skip the research and just talk to a local tech, call <a href={`tel:${PHONE_TEL}`} class="text-[#C8102E] font-semibold hover:underline">{PHONE_DISPLAY}</a> for a free quote.
+        </p>
+
+        <h2 class="font-[Bebas_Neue] text-[32px] sm:text-[36px] uppercase text-[#1D1D1D] leading-[1.1] mt-12 mb-5">
+          Quick Picks: Best Garage Door Openers for 2026
+        </h2>
+
+        <ul class="space-y-3 text-[16px] leading-[26px] text-[#1D1D1D] mb-10 list-disc pl-6">
+          <li><strong>Best overall:</strong> LiftMaster 8550WLB (belt drive, MyQ Wi-Fi, battery backup)</li>
+          <li><strong>Best budget:</strong> Chamberlain B4505T (belt drive, smart-ready, solid value)</li>
+          <li><strong>Quietest:</strong> LiftMaster 8500W (jackshaft / wall-mount, near-silent)</li>
+          <li><strong>Heavy-duty pick:</strong> LiftMaster 8587W (chain drive, 3/4 HP, oversized doors)</li>
+          <li><strong>Best smart upgrade kit:</strong> Chamberlain MyQ Smart Garage Hub (works with most existing openers)</li>
+        </ul>
+
+        <h2 class="font-[Bebas_Neue] text-[32px] sm:text-[36px] uppercase text-[#1D1D1D] leading-[1.1] mt-12 mb-5">
+          What to Look For in a Garage Door Opener
+        </h2>
+
+        <p class="text-[16px] leading-[28px] text-[#4D4D4D] mb-5">
+          Modern openers are far better than the ones from a decade ago, but the spec sheets can be confusing. Here are the five things that actually matter, in order of importance:
+        </p>
+
+        <h3 class="font-[Bebas_Neue] text-[24px] uppercase text-[#1D1D1D] mt-8 mb-3">1. Drive Type</h3>
+        <p class="text-[16px] leading-[28px] text-[#4D4D4D] mb-4">
+          The four main drive types each have different noise, durability, and price profiles:
+        </p>
+        <ul class="space-y-3 text-[16px] leading-[26px] text-[#4D4D4D] mb-6 list-disc pl-6">
+          <li><strong>Belt drive:</strong> Quietest mainstream option, near-silent in operation. Great for attached garages and bedrooms over the garage. Belts last 10 to 15 years on average.</li>
+          <li><strong>Chain drive:</strong> Loudest, but cheapest and toughest. Standard choice for detached garages, workshops, and oversized doors.</li>
+          <li><strong>Screw drive:</strong> Mid-range noise, fewer moving parts. Florida heat is rough on screw drives, so we don't usually recommend them in Crestview unless your garage is air-conditioned.</li>
+          <li><strong>Jackshaft (wall-mount, direct-drive):</strong> Mounts on the wall beside the door instead of overhead. Quietest of all, frees ceiling space, ideal for high-ceiling and cathedral garages. Premium price.</li>
+        </ul>
+
+        <h3 class="font-[Bebas_Neue] text-[24px] uppercase text-[#1D1D1D] mt-8 mb-3">2. Horsepower (HP)</h3>
+        <p class="text-[16px] leading-[28px] text-[#4D4D4D] mb-6">
+          For a single-car door (8x7 or 9x7), 1/2 HP is plenty. For a double-car door (16x7) or any insulated solid-wood door, step up to 3/4 HP. For oversized commercial-style doors (over 16 feet wide or extra tall), look for 1 to 1-1/4 HP. Undersized openers wear out faster and burn through circuit boards from the strain, so don't try to save $50 here.
+        </p>
+
+        <h3 class="font-[Bebas_Neue] text-[24px] uppercase text-[#1D1D1D] mt-8 mb-3">3. Smart Features (Wi-Fi, MyQ, Aladdin)</h3>
+        <p class="text-[16px] leading-[28px] text-[#4D4D4D] mb-6">
+          In 2026, almost every opener over $250 ships with Wi-Fi built in. <strong>LiftMaster MyQ</strong> and <strong>Chamberlain MyQ</strong> share the same app and are by far the most reliable. Genie's Aladdin Connect works fine but has a smaller third-party ecosystem. Smart features let you check if the door is open from anywhere, get alerts when kids come home from school, schedule automatic close times, and integrate with Amazon Key for in-garage delivery.
+        </p>
+
+        <h3 class="font-[Bebas_Neue] text-[24px] uppercase text-[#1D1D1D] mt-8 mb-3">4. Battery Backup</h3>
+        <p class="text-[16px] leading-[28px] text-[#4D4D4D] mb-6">
+          Florida summer storms knock out power constantly, and the last thing you want is your car stuck in the garage during a hurricane evacuation. Battery backup is a must in Crestview. LiftMaster offers it built-in on most current models; Chamberlain has it as an add-on. California already requires battery backup by law on every new install, and we expect Florida to follow within a few years.
+        </p>
+
+        <h3 class="font-[Bebas_Neue] text-[24px] uppercase text-[#1D1D1D] mt-8 mb-3">5. Security: Rolling Codes + Photo-Eye Sensors</h3>
+        <p class="text-[16px] leading-[28px] text-[#4D4D4D] mb-10">
+          Every opener sold today has rolling-code remote encryption (Security+ 2.0 on LiftMaster), but it's worth verifying. Skip any opener still using fixed codes: those are trivial to clone with a $30 scanner from Amazon. Photo-eye safety sensors are required by law on every opener since 1993, and any opener missing them is a liability.
+        </p>
+
+        {/* Mid-article CTA banner */}
+        <aside class="my-10 bg-[#F5F5F5] border-l-4 border-[#C8102E] p-6 sm:p-8 rounded-r-lg">
+          <div class="font-[Bebas_Neue] text-[20px] uppercase tracking-[0.1em] text-[#C8102E] mb-2">Free Estimate</div>
+          <p class="text-[16px] leading-[26px] text-[#1D1D1D] mb-4">
+            Not sure which opener fits your door, garage, or budget? We do free in-home consultations across Crestview and Okaloosa County. Same-day appointments most weekdays.
+          </p>
+          <a
+            href={`tel:${PHONE_TEL}`}
+            class="inline-flex items-center justify-center gap-2 bg-[#C8102E] text-white py-3 px-6 font-[Bebas_Neue] text-[16px] tracking-[0.1em] rounded-full border-2 border-[#C8102E] hover:bg-[#9A0A23] hover:border-[#9A0A23] transition-colors whitespace-nowrap"
+          >
+            Call {PHONE_DISPLAY}
+          </a>
+        </aside>
+
+        <h2 class="font-[Bebas_Neue] text-[32px] sm:text-[36px] uppercase text-[#1D1D1D] leading-[1.1] mt-12 mb-5">
+          The Best Garage Door Openers of 2026 (Detailed)
+        </h2>
+
+        <h3 class="font-[Bebas_Neue] text-[26px] uppercase text-[#1D1D1D] mt-8 mb-3">1. LiftMaster 8550WLB - Best Overall</h3>
+
+        <figure class="my-6">
+          <img
+            src="/images/services/garage-door-opener-repair-2.jpg"
+            alt="LiftMaster MyQ smart garage door opener installed by Fast Garage Door Repair Crestview"
+            width="1200"
+            height="800"
+            loading="lazy"
+            decoding="async"
+            class="w-full h-auto rounded-lg shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
+          />
+        </figure>
+
+        <ul class="space-y-2 text-[15px] leading-[24px] text-[#4D4D4D] mb-4 pl-5 list-none">
+          <li>✓ DC belt drive, 1/2 HP, near-silent</li>
+          <li>✓ Built-in Wi-Fi (MyQ) + Security+ 2.0 rolling codes</li>
+          <li>✓ Battery backup included</li>
+          <li>✓ Soft start/stop reduces wear on door panels and springs</li>
+        </ul>
+        <p class="text-[16px] leading-[28px] text-[#4D4D4D] mb-8">
+          Our default recommendation for the vast majority of Crestview homes. The 8550WLB ticks every box (belt drive, smart, battery backup, strong warranty), runs whisper-quiet, and is built like a tank. We've installed hundreds of these and the failure rate is the lowest of any model we carry. Pair it with a <a href="/service/garage-door-keypad-repair/" class="text-[#C8102E] font-semibold hover:underline">universal keypad</a> for kid and contractor access without keys.
+        </p>
+
+        <h3 class="font-[Bebas_Neue] text-[26px] uppercase text-[#1D1D1D] mt-10 mb-3">2. Chamberlain B4505T - Best Budget Pick</h3>
+        <ul class="space-y-2 text-[15px] leading-[24px] text-[#4D4D4D] mb-4 pl-5 list-none">
+          <li>✓ DC belt drive, 1/2 HP</li>
+          <li>✓ Built-in MyQ Wi-Fi</li>
+          <li>✓ Smartphone control + smart-home integrations</li>
+          <li>✗ No factory battery backup (add-on accessory)</li>
+        </ul>
+        <p class="text-[16px] leading-[28px] text-[#4D4D4D] mb-8">
+          Same MyQ ecosystem as LiftMaster (Chamberlain owns LiftMaster), nearly the same hardware quality, $100 to $150 less. The trade-off is no factory battery backup. If you can live without that, or buy the optional battery, this is the best value opener on the market in 2026.
+        </p>
+
+        <h3 class="font-[Bebas_Neue] text-[26px] uppercase text-[#1D1D1D] mt-10 mb-3">3. LiftMaster 8500W - Quietest Pick (Wall-Mount Jackshaft)</h3>
+        <ul class="space-y-2 text-[15px] leading-[24px] text-[#4D4D4D] mb-4 pl-5 list-none">
+          <li>✓ Direct-drive, mounts on the wall (no overhead rail)</li>
+          <li>✓ Frees up ceiling space, ideal for cathedral or finished garages</li>
+          <li>✓ Built-in Wi-Fi + battery backup</li>
+          <li>✗ Only works with torsion-spring doors (not extension springs)</li>
+        </ul>
+        <p class="text-[16px] leading-[28px] text-[#4D4D4D] mb-8">
+          If your garage has a high or cathedral ceiling, or if you've finished the garage as a workshop or gym, this is the opener you want. It mounts on the wall beside the torsion bar and runs almost completely silently. The only catch: your door must use a torsion spring (most modern doors do; if you're not sure, our techs can verify during a free measure visit).
+        </p>
+
+        <h3 class="font-[Bebas_Neue] text-[26px] uppercase text-[#1D1D1D] mt-10 mb-3">4. LiftMaster 8587W - Heavy-Duty Pick</h3>
+
+        <figure class="my-6">
+          <img
+            src="/images/services/garage-door-installation-3.jpg"
+            alt="Heavy-duty residential garage door installation, oversized double-car door"
+            width="1200"
+            height="800"
+            loading="lazy"
+            decoding="async"
+            class="w-full h-auto rounded-lg shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
+          />
+        </figure>
+
+        <ul class="space-y-2 text-[15px] leading-[24px] text-[#4D4D4D] mb-4 pl-5 list-none">
+          <li>✓ Chain drive, 3/4 HP</li>
+          <li>✓ Built for oversized doors and high-cycle use</li>
+          <li>✓ MyQ Wi-Fi + battery backup</li>
+        </ul>
+        <p class="text-[16px] leading-[28px] text-[#4D4D4D] mb-8">
+          For oversized double-car doors, heavy insulated wood doors, or any door over 16 feet wide, the 8587W is the go-to. Chain drives are louder than belts, but they're indestructible. Pair with a fresh set of properly-sized torsion springs (we always inspect during install) for a setup that runs reliably for 15+ years. See our <a href="/service/garage-door-installation/" class="text-[#C8102E] font-semibold hover:underline">garage door installation</a> page for full install details.
+        </p>
+
+        <h3 class="font-[Bebas_Neue] text-[26px] uppercase text-[#1D1D1D] mt-10 mb-3">5. Chamberlain MyQ Smart Garage Hub - Best Upgrade Kit</h3>
+        <ul class="space-y-2 text-[15px] leading-[24px] text-[#4D4D4D] mb-4 pl-5 list-none">
+          <li>✓ Adds smart Wi-Fi control to most older openers (1993+)</li>
+          <li>✓ Works with non-Chamberlain brands too (Genie, Craftsman, Linear, and more)</li>
+          <li>✓ Cheaper than buying a whole new opener</li>
+        </ul>
+        <p class="text-[16px] leading-[28px] text-[#4D4D4D] mb-10">
+          If your existing opener still works fine but you want smartphone control, alerts, and Amazon Key compatibility, just add the MyQ Hub. We install these in under 30 minutes, and it saves you $300 to $500 vs replacing the whole opener. The only requirement: your existing opener must be from 1993 or later (anything with photo-eye safety sensors qualifies).
+        </p>
+
+        <h2 class="font-[Bebas_Neue] text-[32px] sm:text-[36px] uppercase text-[#1D1D1D] leading-[1.1] mt-12 mb-5">
+          Brands and Models to Skip
+        </h2>
+        <p class="text-[16px] leading-[28px] text-[#4D4D4D] mb-5">
+          A few categories of openers we don't recommend for Crestview homes:
+        </p>
+        <ul class="space-y-3 text-[16px] leading-[26px] text-[#4D4D4D] mb-10 list-disc pl-6">
+          <li><strong>Sub-$200 big-box-store openers without rolling-code encryption.</strong> Older fixed-code remotes are trivially clonable. Skip.</li>
+          <li><strong>Screw-drive openers in non-air-conditioned garages.</strong> Florida heat warps the lubricated steel screw and they fail faster than belt or chain.</li>
+          <li><strong>Genie SilentMax 1200 (older units).</strong> The pre-2024 SilentMax had a known logic-board failure mode in humid climates. Newer models are fine; ask before you buy used.</li>
+          <li><strong>"Smart" openers from no-name brands without 5-year warranties.</strong> The savings disappear the first time you need a replacement board, which is rarely available.</li>
+        </ul>
+
+        <h2 class="font-[Bebas_Neue] text-[32px] sm:text-[36px] uppercase text-[#1D1D1D] leading-[1.1] mt-12 mb-5">
+          What Installation Looks Like in Crestview
+        </h2>
+        <p class="text-[16px] leading-[28px] text-[#4D4D4D] mb-5">
+          Most opener installs take two to three hours. Here's what to expect when we come out:
+        </p>
+        <ol class="space-y-3 text-[16px] leading-[26px] text-[#4D4D4D] mb-8 list-decimal pl-6">
+          <li>Free in-home consultation. We measure your door, check spring sizing, inspect tracks, and recommend the right opener for your setup.</li>
+          <li>Old opener removal and disposal. We unbolt the rail, motor, and wiring, and haul away the old unit.</li>
+          <li>New opener install. Rail assembled, motor mounted to the ceiling joists (or wall for jackshaft), photo-eye sensors aligned, wiring run cleanly.</li>
+          <li>Programming and pairing. Remotes, wall buttons, vehicle HomeLink, smartphone app, and any keypads programmed to your preference.</li>
+          <li>Safety check + walkthrough. We verify travel limits, force settings, and reverse safety per UL 325, then show you how everything works.</li>
+        </ol>
+        <p class="text-[16px] leading-[28px] text-[#4D4D4D] mb-10">
+          We pull permits when required by Okaloosa County code. If your existing torsion springs are end-of-life, we'll flag it during the install and quote <a href="/service/garage-door-spring-repair/" class="text-[#C8102E] font-semibold hover:underline">spring repair</a> separately, no upsell pressure either way.
+        </p>
+
+        <h2 class="font-[Bebas_Neue] text-[32px] sm:text-[36px] uppercase text-[#1D1D1D] leading-[1.1] mt-12 mb-5">
+          FAQ: Garage Door Openers in 2026
+        </h2>
+
+        <details class="border-b border-[#E5E5E5] py-4">
+          <summary class="font-[Bebas_Neue] text-[20px] text-[#1D1D1D] cursor-pointer">How much does a new garage door opener cost installed?</summary>
+          <p class="mt-3 text-[15px] leading-[26px] text-[#4D4D4D]">Pricing depends on the model, drive type, and any accessories (battery backup, keypad, smart hub). We always provide a free written quote before any work. Call <a href={`tel:${PHONE_TEL}`} class="text-[#C8102E] font-semibold hover:underline">{PHONE_DISPLAY}</a> for a same-day estimate.</p>
+        </details>
+        <details class="border-b border-[#E5E5E5] py-4">
+          <summary class="font-[Bebas_Neue] text-[20px] text-[#1D1D1D] cursor-pointer">Can I install an opener I bought online?</summary>
+          <p class="mt-3 text-[15px] leading-[26px] text-[#4D4D4D]">Yes. We install customer-supplied openers as long as they're new and complete. We charge labor only and stand behind the workmanship the same as on our own units.</p>
+        </details>
+        <details class="border-b border-[#E5E5E5] py-4">
+          <summary class="font-[Bebas_Neue] text-[20px] text-[#1D1D1D] cursor-pointer">Do I need a new garage door if I'm replacing the opener?</summary>
+          <p class="mt-3 text-[15px] leading-[26px] text-[#4D4D4D]">Not usually. We can pair a new opener with an existing door as long as the door is in good shape and the springs are properly sized. We'll inspect everything during the free measure visit.</p>
+        </details>
+        <details class="border-b border-[#E5E5E5] py-4">
+          <summary class="font-[Bebas_Neue] text-[20px] text-[#1D1D1D] cursor-pointer">How long does a garage door opener last?</summary>
+          <p class="mt-3 text-[15px] leading-[26px] text-[#4D4D4D]">Quality openers (LiftMaster, Chamberlain, Genie pro models) typically last 12 to 18 years with normal use. Low-end big-box-store units often fail in 6 to 8 years. Florida humidity and lightning storms shorten the lifespan of any opener that doesn't have surge protection.</p>
+        </details>
+        <details class="border-b border-[#E5E5E5] py-4">
+          <summary class="font-[Bebas_Neue] text-[20px] text-[#1D1D1D] cursor-pointer">What's the quietest garage door opener?</summary>
+          <p class="mt-3 text-[15px] leading-[26px] text-[#4D4D4D]">The LiftMaster 8500W jackshaft (wall-mount) is the quietest mainstream opener available in 2026. For overhead-rail openers, the LiftMaster 8550WLB belt drive is essentially silent.</p>
+        </details>
+
+        <h2 class="font-[Bebas_Neue] text-[32px] sm:text-[36px] uppercase text-[#1D1D1D] leading-[1.1] mt-12 mb-5">
+          Bottom Line
+        </h2>
+        <p class="text-[16px] leading-[28px] text-[#4D4D4D] mb-6">
+          For most Crestview homeowners in 2026, the LiftMaster 8550WLB is the right answer: belt drive, MyQ smart, battery backup, and a build quality that lasts 15+ years. If you're on a tighter budget, the Chamberlain B4505T is nearly identical for less. For tall or finished garages, the LiftMaster 8500W jackshaft is in a class of its own. And if your existing opener is fine but you want smart features, just add a Chamberlain MyQ Hub.
+        </p>
+        <p class="text-[16px] leading-[28px] text-[#4D4D4D] mb-10">
+          Whatever you pick, the install matters as much as the unit. A correctly balanced door, properly aligned photo-eye sensors, and matched-spec torsion springs make any opener last longer and run quieter. Need a recommendation for your specific door? Call us at <a href={`tel:${PHONE_TEL}`} class="text-[#C8102E] font-semibold hover:underline">{PHONE_DISPLAY}</a> for a free in-home consultation, or <a href="/contact-us/" class="text-[#C8102E] font-semibold hover:underline">request an estimate online</a>.
+        </p>
+      </div>
+    </article>
+
+    <InternalLinksBlock
+      kicker="Related Services"
+      heading="Need Help With Your Garage Door?"
+      intro="From opener repair to full new installs, we've got every garage door issue covered across Crestview and Okaloosa County."
+      links={relatedLinks}
+      columns={3}
+    />
+
+    <ContactSection />
+  </main>
+  <SiteFooter />
+</Layout>

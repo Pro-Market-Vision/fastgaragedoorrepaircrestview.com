@@ -1,0 +1,29 @@
+---
+interface Props {
+  variant?: "solid" | "outline-white" | "solid-white";
+  href?: string;
+  class?: string;
+}
+const { variant = "solid", href, class: className = "" } = Astro.props;
+
+const base =
+  "inline-flex items-center justify-center gap-2 px-[30px] py-[15px] font-semibold text-[16px] leading-[26px] transition-colors duration-200 rounded-full border-2 cursor-pointer whitespace-nowrap";
+
+const variantClasses: Record<string, string> = {
+  solid: "bg-[#C8102E] text-white border-[#C8102E] hover:bg-[#9A0A23] hover:border-[#9A0A23]",
+  "outline-white": "bg-transparent text-white border-white hover:bg-white hover:text-[#C8102E]",
+  "solid-white": "bg-white text-[#C8102E] border-white hover:bg-[#C8102E] hover:text-white",
+};
+
+const classes = `${base} ${variantClasses[variant]} ${className}`;
+---
+
+{href ? (
+  <a href={href} class={classes}>
+    <slot />
+  </a>
+) : (
+  <button type="button" class={classes}>
+    <slot />
+  </button>
+)}

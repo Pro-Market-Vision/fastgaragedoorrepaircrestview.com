@@ -1,0 +1,33 @@
+---
+import PrimaryButton from "./PrimaryButton.astro";
+import Icon from "./Icon.astro";
+import { PHONE_DISPLAY, PHONE_TEL } from "@/data/site";
+---
+
+<section class="relative isolate overflow-hidden">
+  <div class="absolute inset-0 -z-20 bg-cover bg-center" style="background-image:url('/images/hero-banner-1.jpg')"></div>
+  <div class="absolute inset-0 -z-20 bg-cover bg-center hero-fade" style="background-image:url('/images/hero-banner-2.jpg')"></div>
+  <div class="absolute inset-0 -z-10 bg-black/45"></div>
+
+  <div class="mx-auto max-w-[1240px] px-5 lg:px-12 py-24 lg:py-36 min-h-[640px] flex items-center">
+    <div class="max-w-[920px] text-white">
+      <div class="mb-8 flex items-center gap-4">
+        <span class="font-[Bebas_Neue] text-[18px] uppercase tracking-[0.18em]">Fast, Reliable, Affordable</span>
+        <span class="h-px w-16 bg-white" aria-hidden="true"></span>
+      </div>
+      <h1 class="font-[Bebas_Neue] text-[48px] sm:text-[60px] lg:text-[75px] leading-[1] uppercase font-medium">
+        Crestview's Same-Day Garage Door Repair & Installation
+      </h1>
+      <p class="mt-6 max-w-[700px] text-white/90 text-[18px] leading-[28px]">
+        Broken springs, dead openers, off-track doors, new garage door installs, commercial overhead doors, and 24/7 emergencies. Local Crestview techs, free estimates, and we show up the same day across Okaloosa County.
+      </p>
+      <div class="mt-10 flex flex-wrap gap-4">
+        <PrimaryButton href={`tel:${PHONE_TEL}`} variant="solid">
+          <Icon name="phone" class="h-4 w-4" />
+          {PHONE_DISPLAY}
+        </PrimaryButton>
+        <PrimaryButton href="#contact" variant="solid-white">Free Estimate</PrimaryButton>
+      </div>
+    </div>
+  </div>
+</section>

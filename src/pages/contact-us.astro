@@ -1,0 +1,43 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import InnerHero from "@/components/InnerHero.astro";
+import Breadcrumbs from "@/components/Breadcrumbs.astro";
+import ContactSection from "@/components/ContactSection.astro";
+import FaqSection from "@/components/FaqSection.astro";
+import SiteFooter from "@/components/SiteFooter.astro";
+import InternalLinksBlock from "@/components/InternalLinksBlock.astro";
+import ServiceAreaSection from "@/components/ServiceAreaSection.astro";
+import { SERVICE_CATEGORIES } from "@/data/site";
+
+const popularServices = SERVICE_CATEGORIES.flatMap((c) => c.services).slice(0, 6).map((s) => ({
+  href: s.href,
+  label: s.title,
+  description: `Professional ${s.title.toLowerCase()} in Crestview and Okaloosa County.`,
+}));
+---
+
+<Layout
+  title="Contact Us | Free Estimate Today | Fast Garage Door Repair Crestview"
+  description="Request a free garage door repair estimate in Crestview, FL. Same-day dispatch for spring, opener, and emergency calls across Okaloosa County. Schedule online or call now."
+>
+  <SiteHeader />
+  <main class="flex-1">
+    <InnerHero title="Contact Us" kicker="Get In Touch" />
+    <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Contact Us" }]} />
+    <ContactSection />
+
+    <InternalLinksBlock
+      kicker="Popular Services"
+      heading="What We Can Help With"
+      intro="Browse our most-requested garage door services."
+      links={popularServices}
+      columns={3}
+    />
+
+    <ServiceAreaSection variant="dark" />
+
+    <FaqSection />
+  </main>
+  <SiteFooter />
+</Layout>

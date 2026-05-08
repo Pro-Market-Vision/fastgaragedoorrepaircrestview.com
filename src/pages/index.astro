@@ -1,0 +1,133 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import HeroSection from "@/components/HeroSection.astro";
+import CountersSection from "@/components/CountersSection.astro";
+import AboutSection from "@/components/AboutSection.astro";
+import ServicesSection from "@/components/ServicesSection.astro";
+import CtaBannerSection from "@/components/CtaBannerSection.astro";
+import TestimonialsSection from "@/components/TestimonialsSection.astro";
+import FaqSection from "@/components/FaqSection.astro";
+import ContactSection from "@/components/ContactSection.astro";
+import SiteFooter from "@/components/SiteFooter.astro";
+import InternalLinksBlock from "@/components/InternalLinksBlock.astro";
+import Icon from "@/components/Icon.astro";
+import PrimaryButton from "@/components/PrimaryButton.astro";
+import { FAQS, LOCATIONS, PHONE_DISPLAY, PHONE_TEL, ALL_SERVICES } from "@/data/site";
+
+const SERVICE_AREA_CITIES = [
+  "Crestview", "Baker", "Laurel Hill", "Holt", "Milligan",
+  "Niceville", "Valparaiso", "Shalimar", "Eglin AFB",
+  "Fort Walton Beach", "Destin",
+];
+
+const blogLinks = [
+  {
+    href: "/about-us/",
+    label: "About Fast Garage Door Repair & Service Crestview",
+    description: "Local Crestview shop, same-day service, free estimates. Meet the team.",
+  },
+  {
+    href: "/blog/best-garage-door-openers-2026/",
+    label: "Best Garage Door Openers for 2026",
+    description: "Buyer's guide: LiftMaster vs Chamberlain vs Genie, smart features, and what to skip.",
+  },
+  {
+    href: "/contact-us/",
+    label: "Get a Free Estimate",
+    description: "Need a repair or quote? Reach us by phone or message us anytime.",
+  },
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQS.map((f) => ({
+    "@type": "Question",
+    name: f.question,
+    acceptedAnswer: { "@type": "Answer", text: f.answer },
+  })),
+};
+---
+
+<Layout
+  title="Garage Door Repair Crestview, FL | Free Estimates & Same-Day Service"
+  description="Same-day garage door spring, opener, and keypad repair in Crestview, FL. Local techs, free estimates, 24/7 emergency service across Okaloosa County. Call today."
+  schema={faqSchema}
+>
+  <SiteHeader />
+  <main class="flex-1">
+    <HeroSection />
+    <CountersSection />
+    <AboutSection />
+    <ServicesSection />
+    <section id="service-areas" class="bg-[#F5F5F5] border-t-4 border-[#C8102E]">
+      <div class="mx-auto max-w-[1240px] px-5 lg:px-12 py-16 lg:py-20">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          <div class="lg:col-span-5">
+            <div class="font-[Bebas_Neue] text-[18px] uppercase tracking-[0.18em] text-[#C8102E]">Service Area</div>
+            <div class="mt-2 mb-5 h-[3px] w-12 bg-[#C8102E]" aria-hidden="true"></div>
+            <h2 class="font-[Bebas_Neue] text-[36px] sm:text-[44px] lg:text-[48px] leading-[1.05] uppercase font-medium text-[#1D1D1D]">
+              Crestview, FL & All of Okaloosa County
+            </h2>
+            <p class="mt-5 text-[16px] leading-[26px] text-[#4D4D4D]">
+              We come to you. Same-day garage door service for homes and businesses across Crestview and the surrounding cities. Local techs, free estimates, and we pick up the phone live 24/7.
+            </p>
+            <div class="mt-7 flex flex-wrap gap-3">
+              <PrimaryButton href={`tel:${PHONE_TEL}`} variant="solid">
+                <Icon name="phone" class="h-4 w-4" />
+                {PHONE_DISPLAY}
+              </PrimaryButton>
+              <PrimaryButton href="/location/crestview/">View Service Area</PrimaryButton>
+            </div>
+          </div>
+
+          <div class="lg:col-span-7">
+            <div class="bg-white rounded-lg p-6 sm:p-8 shadow-[0_8px_24px_rgba(0,0,0,0.06)] border border-[#E5E5E5]">
+              <div class="font-[Bebas_Neue] text-[14px] uppercase tracking-[0.15em] text-[#7A7A7A] mb-4">Cities We Cover</div>
+              <ul class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-2">
+                {SERVICE_AREA_CITIES.map((city) => (
+                  <li class="flex items-center gap-2 text-[15px] text-[#1D1D1D]">
+                    <span class="flex h-5 w-5 shrink-0 items-center justify-center bg-[#C8102E] text-white rounded-sm">
+                      <Icon name="map-pin" class="h-3 w-3" />
+                    </span>
+                    {city}
+                  </li>
+                ))}
+              </ul>
+              <div class="mt-6 pt-6 border-t border-[#E5E5E5]">
+                <div class="font-[Bebas_Neue] text-[14px] uppercase tracking-[0.15em] text-[#7A7A7A] mb-3">All Services Available in Your Area</div>
+                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">
+                  {ALL_SERVICES.map((s) => (
+                    <li>
+                      <a href={s.href} class="flex items-center gap-2 text-[14px] text-[#1D1D1D] hover:text-[#C8102E] transition-colors">
+                        <Icon name="arrow-right" class="h-3 w-3 text-[#C8102E] shrink-0" />
+                        {s.title}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <CtaBannerSection />
+    <TestimonialsSection />
+
+    <InternalLinksBlock
+      kicker="Learn More"
+      heading="Explore Our Resources"
+      intro="From expert tips to company background, get to know Fast Garage Door Repair & Service Crestview before you book."
+      links={blogLinks}
+      columns={3}
+      variant="dark"
+    />
+
+    <FaqSection />
+    <ContactSection />
+  </main>
+  <SiteFooter />
+</Layout>

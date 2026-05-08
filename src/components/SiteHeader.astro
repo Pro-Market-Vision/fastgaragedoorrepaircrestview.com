@@ -1,0 +1,204 @@
+---
+import Icon from "./Icon.astro";
+import { NAV, COMPANY, PHONE_DISPLAY, PHONE_TEL, SERVICE_CATEGORIES } from "@/data/site";
+---
+
+<header class="sticky top-0 z-50 w-full group/header relative">
+  <!-- Top utility bar -->
+  <div class="bg-[#1D1D1D] text-white">
+    <div class="mx-auto flex max-w-[1240px] items-center justify-end gap-6 px-5 lg:px-12 py-2 text-[14px]">
+      <span class="hidden sm:inline-flex items-center gap-2 text-white/80">
+        <Icon name="map-pin" class="h-4 w-4" />
+        Serving Crestview, FL
+      </span>
+      <a
+        href={`tel:${PHONE_TEL}`}
+        class="inline-flex items-center gap-2 bg-[#C8102E] text-white px-4 py-1.5 font-[Bebas_Neue] tracking-[0.08em] rounded-full border border-[#C8102E] hover:bg-[#9A0A23] hover:border-[#9A0A23] transition-colors whitespace-nowrap"
+      >
+        <Icon name="phone" class="h-4 w-4" />
+        {PHONE_DISPLAY}
+      </a>
+    </div>
+  </div>
+
+  <!-- Main nav -->
+  <div class="bg-white shadow-[0_1px_0_rgba(0,0,0,0.06)]">
+    <div class="mx-auto flex h-[100px] max-w-[1240px] items-center justify-between px-5 lg:px-12">
+      <a href="/" aria-label={COMPANY} class="flex items-center gap-2 sm:gap-3 min-w-0">
+        <img src="/images/logo.png" alt={COMPANY} width="200" height="200" decoding="async" fetchpriority="high" class="h-12 sm:h-[64px] w-auto shrink-0" />
+        <span class="flex flex-col leading-none min-w-0">
+          <span class="font-[Bebas_Neue] text-[16px] sm:text-[22px] uppercase tracking-[0.04em] text-[#1D1D1D] leading-[1.05]">
+            Fast Garage Door
+          </span>
+          <span class="font-[Bebas_Neue] text-[11px] sm:text-[16px] uppercase tracking-[0.08em] text-[#C8102E] mt-0.5 sm:mt-1">
+            Repair &amp; Service Crestview
+          </span>
+        </span>
+      </a>
+
+      <nav class="hidden lg:flex items-center gap-9 text-[16px] font-medium uppercase tracking-wider text-[#1D1D1D]">
+        {NAV.map((item) => (
+          <div class="group static lg:static">
+            <a href={item.href} class="inline-flex items-center gap-1 py-2 transition-colors hover:text-[#C8102E]">
+              {item.label}
+              {(item.children || item.megaMenu) && <Icon name="chevron-down" class="h-3 w-3" />}
+            </a>
+
+            {/* Mega-menu for Services: width-constrained panel anchored to its trigger */}
+            {item.megaMenu && (
+              <div class="absolute left-1/2 -translate-x-1/2 top-full mt-0 w-[min(1100px,calc(100vw-2rem))] bg-white shadow-[0_10px_25px_0_rgba(0,0,0,0.15)] border-t-2 border-[#C8102E] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50">
+                <div class="px-8 py-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-6 gap-y-8">
+                  {SERVICE_CATEGORIES.map((cat) => (
+                    <div>
+                      <div class="flex items-center gap-2 mb-5">
+                        <span class="block h-[6px] w-[6px] bg-[#C8102E]" aria-hidden="true"></span>
+                        <h4 class="font-[Bebas_Neue] text-[18px] uppercase text-[#101010] leading-none m-0">
+                          {cat.label}
+                        </h4>
+                      </div>
+                      <ul class="space-y-[14px]">
+                        {cat.services.map((s) => (
+                          <li>
+                            <a href={s.href} class="group/link inline-flex items-center gap-2 font-[Bebas_Neue] text-[16px] tracking-[0.02em] text-[#777777] hover:text-[#C8102E] leading-[1.15] transition-colors">
+                              <span class="text-[11px] text-[#C8102E] group-hover/link:translate-x-0.5 transition-transform" aria-hidden="true">▸</span>
+                              {s.title}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Locations dropdown, matches live site default-width style */}
+            {item.children && !item.megaMenu && (
+              <div class="absolute mt-0 w-[260px] bg-white shadow-[0_10px_25px_0_rgba(0,0,0,0.1)] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50 py-3">
+                {item.children.map((child) => (
+                  <a href={child.href} class="group/link flex items-center gap-2 px-6 py-3 font-[Bebas_Neue] text-[18px] tracking-[0.02em] normal-case text-[#777777] hover:text-[#C8102E] hover:bg-[#F8F8F8] transition-colors">
+                    <span class="text-[12px] text-[#C8102E] group-hover/link:translate-x-0.5 transition-transform" aria-hidden="true">▸</span>
+                    {child.label}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </nav>
+
+      <button
+        type="button"
+        id="mobile-menu-toggle"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        class="lg:hidden inline-flex h-10 w-10 items-center justify-center text-[#1D1D1D]"
+      >
+        <Icon name="menu" class="h-6 w-6" />
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu drawer -->
+  <div
+    id="mobile-menu"
+    class="lg:hidden fixed inset-0 z-[60] hidden"
+    aria-hidden="true"
+  >
+    <div id="mobile-menu-overlay" class="absolute inset-0 bg-black/50"></div>
+    <div class="absolute right-0 top-0 h-full w-[88%] max-w-[380px] bg-white shadow-2xl flex flex-col overflow-y-auto">
+      <div class="flex items-center justify-between gap-3 px-5 py-4 border-b border-[#E5E5E5]">
+        <a href="/" class="flex items-center gap-2 min-w-0">
+          <img src="/images/logo.png" alt={COMPANY} width="200" height="200" loading="lazy" decoding="async" class="h-12 w-auto shrink-0" />
+          <span class="flex flex-col leading-none min-w-0">
+            <span class="font-[Bebas_Neue] text-[16px] uppercase tracking-[0.04em] text-[#1D1D1D] leading-[1.05]">
+              Fast Garage Door
+            </span>
+            <span class="font-[Bebas_Neue] text-[12px] uppercase tracking-[0.08em] text-[#C8102E] mt-0.5">
+              Repair &amp; Service Crestview
+            </span>
+          </span>
+        </a>
+        <button
+          type="button"
+          id="mobile-menu-close"
+          aria-label="Close menu"
+          class="inline-flex h-10 w-10 items-center justify-center text-[#1D1D1D]"
+        >
+          <span class="text-[28px] leading-none">×</span>
+        </button>
+      </div>
+      <nav class="flex-1 px-5 py-6">
+        <a href="/" class="block py-3 font-[Bebas_Neue] text-[20px] uppercase text-[#1D1D1D] border-b border-[#E5E5E5]">Home</a>
+
+        <details class="border-b border-[#E5E5E5]">
+          <summary class="flex items-center justify-between py-3 font-[Bebas_Neue] text-[20px] uppercase text-[#1D1D1D] cursor-pointer list-none">
+            Services
+            <Icon name="chevron-down" class="h-3 w-3" />
+          </summary>
+          <div class="pb-4 pl-3 space-y-4">
+            {SERVICE_CATEGORIES.map((cat) => (
+              <div>
+                <div class="font-[Bebas_Neue] text-[16px] uppercase text-[#101010] mt-3 mb-1 flex items-center gap-2">
+                  <span class="block h-[5px] w-[5px] bg-[#C8102E]" aria-hidden="true"></span>
+                  {cat.label}
+                </div>
+                <ul class="space-y-1">
+                  {cat.services.map((s) => (
+                    <li>
+                      <a href={s.href} class="block py-1.5 pl-4 font-[Bebas_Neue] text-[16px] text-[#777777] hover:text-[#C8102E]">
+                        {s.title}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </details>
+
+        <a href="/about-us/" class="block py-3 font-[Bebas_Neue] text-[20px] uppercase text-[#1D1D1D] border-b border-[#E5E5E5]">About Us</a>
+        <a href="/contact-us/" class="block py-3 font-[Bebas_Neue] text-[20px] uppercase text-[#1D1D1D] border-b border-[#E5E5E5]">Contact Us</a>
+        <a href="/blog/" class="block py-3 font-[Bebas_Neue] text-[20px] uppercase text-[#1D1D1D] border-b border-[#E5E5E5]">Blog</a>
+      </nav>
+      <div class="px-5 py-5 border-t border-[#E5E5E5] bg-[#F8F8F8]">
+        <a href={`tel:${PHONE_TEL}`} class="flex items-center justify-center gap-2 bg-[#C8102E] text-white py-3 font-[Bebas_Neue] text-[18px] tracking-[0.1em] rounded-full border-2 border-[#C8102E] hover:bg-[#9A0A23] hover:border-[#9A0A23] transition-colors whitespace-nowrap">
+          <Icon name="phone" class="h-4 w-4" />
+          {PHONE_DISPLAY}
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById("mobile-menu-toggle");
+  const menu = document.getElementById("mobile-menu");
+  const closeBtn = document.getElementById("mobile-menu-close");
+  const overlay = document.getElementById("mobile-menu-overlay");
+
+  function openMenu() {
+    if (!menu || !toggle) return;
+    menu.classList.remove("hidden");
+    menu.setAttribute("aria-hidden", "false");
+    toggle.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
+  }
+  function closeMenu() {
+    if (!menu || !toggle) return;
+    menu.classList.add("hidden");
+    menu.setAttribute("aria-hidden", "true");
+    toggle.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+  }
+
+  toggle?.addEventListener("click", openMenu);
+  closeBtn?.addEventListener("click", closeMenu);
+  overlay?.addEventListener("click", closeMenu);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeMenu();
+  });
+  // Close on nav link click
+  menu?.querySelectorAll("a").forEach((a) => a.addEventListener("click", closeMenu));
+</script>

@@ -1,0 +1,40 @@
+---
+import PrimaryButton from "./PrimaryButton.astro";
+import Icon from "./Icon.astro";
+import { PHONE_DISPLAY as DEFAULT_PHONE_DISPLAY, PHONE_TEL as DEFAULT_PHONE_TEL } from "@/data/site";
+
+interface Props {
+  phoneDisplay?: string;
+  phoneTel?: string;
+}
+
+const { phoneDisplay = DEFAULT_PHONE_DISPLAY, phoneTel = DEFAULT_PHONE_TEL } = Astro.props;
+const PHONE_DISPLAY = phoneDisplay;
+const PHONE_TEL = phoneTel;
+---
+
+<section class="relative isolate overflow-hidden">
+  <div class="absolute inset-0 -z-20 bg-cover bg-center" style="background-image:url('/images/hero-banner-2.jpg')"></div>
+  <div class="absolute inset-0 -z-10 bg-[#C8102E]/85"></div>
+
+  <div class="mx-auto max-w-[1100px] px-5 lg:px-12 py-24 lg:py-28 text-center text-white">
+    <div class="flex items-center justify-center gap-4">
+      <span class="h-px w-16 bg-white" aria-hidden="true"></span>
+      <span class="font-[Bebas_Neue] text-[18px] uppercase tracking-[0.18em]">Get Started Today</span>
+      <span class="h-px w-16 bg-white" aria-hidden="true"></span>
+    </div>
+    <h2 class="mt-6 font-[Bebas_Neue] text-[44px] sm:text-[52px] lg:text-[56px] leading-[1.08] uppercase font-medium">
+      Schedule your free consultation today.
+    </h2>
+    <p class="mt-6 mx-auto max-w-[800px] text-[16px] leading-[28px] text-white/90">
+      Ready to upgrade your garage doors? Whether you need a quick repair or a full installation, our expert team is here to help. With free estimates, quality craftsmanship, and friendly service you can count on, there's no better time to take the next step.
+    </p>
+    <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+      <PrimaryButton href={`tel:${PHONE_TEL}`} variant="solid" class="!border-white">
+        <Icon name="phone" class="h-4 w-4" />
+        {PHONE_DISPLAY}
+      </PrimaryButton>
+      <PrimaryButton href="#contact" variant="solid-white">Free Estimate</PrimaryButton>
+    </div>
+  </div>
+</section>

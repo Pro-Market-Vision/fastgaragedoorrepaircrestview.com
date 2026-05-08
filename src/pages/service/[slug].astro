@@ -1,0 +1,416 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import InnerHero from "@/components/InnerHero.astro";
+import Breadcrumbs from "@/components/Breadcrumbs.astro";
+import CtaBannerSection from "@/components/CtaBannerSection.astro";
+import ContactSection from "@/components/ContactSection.astro";
+import SiteFooter from "@/components/SiteFooter.astro";
+import PrimaryButton from "@/components/PrimaryButton.astro";
+import Icon from "@/components/Icon.astro";
+import InternalLinksBlock from "@/components/InternalLinksBlock.astro";
+import { ALL_SERVICES, SERVICE_CATEGORIES, LOCATIONS, PHONE_DISPLAY, PHONE_TEL } from "@/data/site";
+import pagesContent from "@/data/pages-content.json";
+
+interface PageSection {
+  heading: string;
+  intro: string[];
+  bullets: string[];
+  qa: { question: string; answer: string }[];
+}
+interface PageContent {
+  title: string;
+  h1: string | null;
+  sections: PageSection[];
+}
+
+export function getStaticPaths() {
+  return ALL_SERVICES.map((service) => ({ params: { slug: service.slug }, props: { service } }));
+}
+
+const { service } = Astro.props;
+const slug = service.slug;
+const page = (pagesContent as Record<string, PageContent>)[`svc-${slug}`];
+
+// Per-section image map. Default pattern (extracted from live site):
+//   intro:    main service image (left)
+//   benefits: -a (right)
+//   why:      -c (left)
+//   process:  -b (left)
+const images = {
+  intro: service.image,
+  benefits: `/images/services/${slug}-a.jpg`,
+  why: `/images/services/${slug}-c.jpg`,
+  process: `/images/services/${slug}-b.jpg`,
+};
+
+// Find each section by heading pattern
+const findSection = (predicate: (heading: string) => boolean): PageSection | undefined =>
+  page?.sections.find((s) => predicate(s.heading));
+
+const introSection = findSection((h) => h === service.title || h.toLowerCase() === service.title.toLowerCase());
+const benefitsSection = findSection((h) => /^Benefits of/i.test(h));
+const whySection = findSection((h) => /^Why Choose/i.test(h));
+const processSection = findSection((h) => /Process$/i.test(h));
+const faqSection = findSection((h) => /Frequently Asked|FAQ/i.test(h));
+
+// "Restore Performance Without Full Replacement" / "Protect Your Home with Premium..."
+// is a unique full-width text section between Why Choose and Process.
+const usedHeadings = new Set([
+  introSection?.heading,
+  benefitsSection?.heading,
+  whySection?.heading,
+  processSection?.heading,
+  faqSection?.heading,
+]);
+const middleSection = page?.sections.find(
+  (s) =>
+    !usedHeadings.has(s.heading) &&
+    !/Get a free estimate|Schedule your free|Explore More Services|our wide range|Contact us|Frequently/i.test(s.heading)
+);
+
+const description = introSection?.intro?.[0]?.slice(0, 160) ||
+  `Professional ${service.title.toLowerCase()} in Crestview and Okaloosa County. Free estimates and same-day response. Call (850) 920-2243.`;
+const seoTitle = `${service.title} Crestview, FL | Same-Day Service & Free Estimates`;
+
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: service.title,
+  description,
+  provider: { "@id": "https://fastgaragedoorrepaircrestview.com/#business" },
+  areaServed: ["Crestview, FL", "Okaloosa County, FL"],
+  url: `https://fastgaragedoorrepaircrestview.com${service.href}`,
+};
+
+const faqSchema = faqSection && faqSection.qa.length > 0
+  ? {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqSection.qa.map((qa) => ({
+        "@type": "Question",
+        name: qa.question,
+        acceptedAnswer: { "@type": "Answer", text: qa.answer },
+      })),
+    }
+  : null;
+
+const schemaBlocks = faqSchema ? [serviceSchema, faqSchema] : [serviceSchema];
+
+// Auto-interlink: replace first mention of other service names and location names with anchor tags.
+// Only links services OTHER than the current one, and limits to first occurrence per term.
+const linkClass = "text-[#C8102E] font-semibold hover:underline";
+const linkClassWhite = "text-white underline font-semibold";
+const otherServices = ALL_SERVICES.filter((s) => s.slug !== slug);
+const locationTerms = LOCATIONS.map((l) => ({ pattern: new RegExp(`\\b${l.name}\\b`, "i"), href: `/location/${l.slug}/`, label: l.name }));
+
+function autoLink(text: string, variant: "dark" | "light" = "dark"): string {
+  const cls = variant === "light" ? linkClassWhite : linkClass;
+  const linked = new Set<string>();
+  // On the red middle-section ("light" variant), any pre-baked red links from
+  // pages-content.json (text-[#C8102E]) become invisible. Swap red→white-underline
+  // so phone numbers and inline service links remain readable on the red bg.
+  let result = variant === "light"
+    ? text.replaceAll("text-[#C8102E]", "text-white underline")
+    : text;
+  // Link services (first match only per service)
+  for (const s of otherServices) {
+    if (linked.has(s.slug)) continue;
+    const escaped = s.title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const re = new RegExp(`\\b(${escaped})\\b`, "i");
+    if (re.test(result)) {
+      result = result.replace(re, `<a href="${s.href}" class="${cls}">$1</a>`);
+      linked.add(s.slug);
+    }
+  }
+  // Link locations (first match only per location, skip if already inside an <a>)
+  for (const l of locationTerms) {
+    const key = l.href;
+    if (linked.has(key)) continue;
+    if (l.pattern.test(result)) {
+      // Avoid linking text already inside an anchor tag
+      result = result.replace(new RegExp(`(?!<a[^>]*>)\\b(${l.label})\\b(?![^<]*</a>)`, "i"), `<a href="${l.href}" class="${cls}">$1</a>`);
+      linked.add(key);
+    }
+  }
+  return result;
+}
+
+// Related services: same category first, then fill from other categories, exclude current
+const currentCategory = SERVICE_CATEGORIES.find((c) => c.services.some((s) => s.slug === slug));
+const sameCategoryServices = currentCategory?.services.filter((s) => s.slug !== slug) || [];
+const otherCategoryServices = ALL_SERVICES.filter(
+  (s) => s.slug !== slug && !sameCategoryServices.find((x) => x.slug === s.slug)
+);
+const relatedServices = [...sameCategoryServices, ...otherCategoryServices].slice(0, 6);
+
+const relatedLinks = relatedServices.map((s) => ({
+  href: s.href,
+  label: s.title,
+  description: `Professional ${s.title.toLowerCase()} across Crestview, FL.`,
+}));
+
+const SERVICE_AREA_CITIES = [
+  "Crestview", "Baker", "Laurel Hill", "Holt", "Milligan",
+  "Niceville", "Valparaiso", "Shalimar", "Eglin AFB",
+  "Fort Walton Beach", "Destin",
+];
+---
+
+<Layout
+  title={seoTitle}
+  description={description}
+  ogImage={service.image}
+  schema={schemaBlocks}
+>
+  <SiteHeader />
+  <main class="flex-1">
+    <InnerHero title={page?.h1 || service.title} />
+    <Breadcrumbs items={[
+      { label: "Home", href: "/" },
+      { label: "Services", href: "/#services" },
+      { label: service.title },
+    ]} />
+
+    {/* Section 1, Intro: image LEFT, text RIGHT inside a solid blue card */}
+    <section class="bg-white">
+      <div class="mx-auto max-w-[1200px] px-5 lg:px-12 py-20 lg:py-24 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+        <div class="lg:col-span-6">
+          <img src={images.intro} alt={service.title} class="w-full h-auto rounded-lg shadow-[0_8px_24px_rgba(0,0,0,0.08)]" loading="lazy" />
+        </div>
+        <div class="lg:col-span-6">
+          <div class="bg-[#C8102E] text-white p-8 lg:p-10 rounded-lg shadow-[0_12px_32px_rgba(0,74,173,0.25)]">
+            <h2 class="font-[Bebas_Neue] text-[36px] sm:text-[44px] lg:text-[50px] leading-[1] font-medium uppercase">
+              {service.title}
+            </h2>
+            <div class="mt-3 mb-5 h-[3px] w-12 bg-white" aria-hidden="true"></div>
+            {introSection?.intro.map((p) => (
+              <p class="mt-4 font-[Roboto] text-[15px] leading-[26px] text-white/90" set:html={autoLink(p, "light")} />
+            ))}
+            <div class="mt-7 flex flex-wrap gap-3">
+              <PrimaryButton href={`tel:${PHONE_TEL}`} variant="solid-white">
+                <Icon name="phone" class="h-4 w-4" />
+                {PHONE_DISPLAY}
+              </PrimaryButton>
+              <PrimaryButton href="#contact" variant="outline-white">Free Estimate</PrimaryButton>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Section 2, Benefits: image RIGHT, text LEFT, light gray bg with blue left border */}
+    {benefitsSection && (
+      <section class="bg-[#F8FAFD] border-t-4 border-[#C8102E]">
+        <div class="mx-auto max-w-[1200px] px-5 lg:px-12 py-16 lg:py-20 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+          <div class="lg:col-span-6 lg:order-1 order-2 border-l-4 border-[#C8102E] pl-6">
+            <div class="font-[Bebas_Neue] text-[16px] uppercase tracking-[0.18em] text-[#C8102E]">Benefits</div>
+            <div class="mt-2 mb-4 h-[3px] w-10 bg-[#C8102E]" aria-hidden="true"></div>
+            <h2 class="font-[Bebas_Neue] text-[36px] sm:text-[44px] lg:text-[50px] leading-[1] text-[#1D1D1D] font-medium uppercase">
+              {benefitsSection.heading}
+            </h2>
+            {benefitsSection.intro.map((p) => (
+              <p class="mt-5 font-[Roboto] text-[16px] leading-[26px] text-[#4D4D4D]" set:html={autoLink(p)} />
+            ))}
+            {benefitsSection.bullets.length > 0 && (
+              <ul class="mt-5 space-y-2">
+                {benefitsSection.bullets.map((b) => (
+                  <li class="font-[Roboto] text-[16px] leading-[26px] text-[#4D4D4D] flex gap-2">
+                    <span class="text-[#C8102E] font-bold mt-0.5" aria-hidden="true">▸</span>
+                    <span set:html={autoLink(b)} />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+          <div class="lg:col-span-6 lg:order-2 order-1">
+            <img src={images.benefits} alt={benefitsSection.heading} class="w-full h-auto rounded-lg shadow-[0_8px_24px_rgba(0,0,0,0.08)]" loading="lazy" />
+          </div>
+        </div>
+      </section>
+    )}
+
+    {/* Section 3, Why Choose: image LEFT, text RIGHT in a bordered white card */}
+    {whySection && (
+      <section class="bg-white border-t-4 border-[#C8102E]">
+        <div class="mx-auto max-w-[1200px] px-5 lg:px-12 py-16 lg:py-20 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+          <div class="lg:col-span-6">
+            <img src={images.why} alt={whySection.heading} class="w-full h-auto rounded-lg shadow-[0_8px_24px_rgba(0,0,0,0.08)]" loading="lazy" />
+          </div>
+          <div class="lg:col-span-6 border-2 border-[#C8102E] rounded-lg p-7 lg:p-8 bg-white">
+            <div class="font-[Bebas_Neue] text-[16px] uppercase tracking-[0.18em] text-[#C8102E]">Why Us</div>
+            <div class="mt-2 mb-4 h-[3px] w-10 bg-[#C8102E]" aria-hidden="true"></div>
+            <h2 class="font-[Bebas_Neue] text-[36px] sm:text-[44px] lg:text-[50px] leading-[1] text-[#1D1D1D] font-medium uppercase">
+              {whySection.heading}
+            </h2>
+            {whySection.intro.map((p) => (
+              <p class="mt-5 font-[Roboto] text-[16px] leading-[26px] text-[#4D4D4D]" set:html={autoLink(p)} />
+            ))}
+            {whySection.bullets.length > 0 && (
+              <ul class="mt-5 space-y-2">
+                {whySection.bullets.map((b) => (
+                  <li class="font-[Roboto] text-[16px] leading-[26px] text-[#4D4D4D] flex gap-2">
+                    <span class="text-[#C8102E] font-bold mt-0.5" aria-hidden="true">▸</span>
+                    <span set:html={autoLink(b)} />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      </section>
+    )}
+
+    {/* Section 4, Middle text-only block: full-width with blue background panel */}
+    {middleSection && (
+      <section class="bg-white">
+        <div class="mx-auto max-w-[1200px] px-5 lg:px-12 py-16 lg:py-20">
+          <div class="bg-[#C8102E] text-white rounded-lg p-8 lg:p-12 shadow-[0_12px_32px_rgba(0,74,173,0.2)]">
+            <div class="font-[Bebas_Neue] text-[16px] uppercase tracking-[0.18em] text-white/80">Important</div>
+            <div class="mt-2 mb-4 h-[3px] w-10 bg-white" aria-hidden="true"></div>
+            <h2 class="font-[Bebas_Neue] text-[36px] sm:text-[44px] lg:text-[50px] leading-[1] font-medium uppercase">
+              {middleSection.heading}
+            </h2>
+            {middleSection.intro.map((p) => (
+              <p class="mt-5 font-[Roboto] text-[16px] leading-[26px] text-white/90 max-w-[900px]" set:html={autoLink(p, "light")} />
+            ))}
+            {middleSection.bullets.length > 0 && (
+              <ul class="mt-5 space-y-2 max-w-[900px]">
+                {middleSection.bullets.map((b) => (
+                  <li class="font-[Roboto] text-[16px] leading-[26px] text-white/90 flex gap-2">
+                    <span class="text-white font-bold mt-0.5" aria-hidden="true">▸</span>
+                    <span set:html={autoLink(b)} />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      </section>
+    )}
+
+    {/* Section 5, Process: image LEFT, text RIGHT, light gray bg with blue left border */}
+    {processSection && (
+      <section class="bg-[#F8FAFD] border-t-4 border-[#C8102E]">
+        <div class="mx-auto max-w-[1200px] px-5 lg:px-12 py-16 lg:py-20 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+          <div class="lg:col-span-6">
+            <img src={images.process} alt={processSection.heading} class="w-full h-auto rounded-lg shadow-[0_8px_24px_rgba(0,0,0,0.08)]" loading="lazy" />
+          </div>
+          <div class="lg:col-span-6 border-l-4 border-[#C8102E] pl-6">
+            <div class="font-[Bebas_Neue] text-[16px] uppercase tracking-[0.18em] text-[#C8102E]">Our Process</div>
+            <div class="mt-2 mb-4 h-[3px] w-10 bg-[#C8102E]" aria-hidden="true"></div>
+            <h2 class="font-[Bebas_Neue] text-[36px] sm:text-[44px] lg:text-[50px] leading-[1] text-[#1D1D1D] font-medium uppercase">
+              {processSection.heading}
+            </h2>
+            {processSection.intro.map((p) => (
+              <p class="mt-5 font-[Roboto] text-[16px] leading-[26px] text-[#4D4D4D]" set:html={autoLink(p)} />
+            ))}
+            {processSection.bullets.length > 0 && (
+              <ul class="mt-5 space-y-2">
+                {processSection.bullets.map((b) => (
+                  <li class="font-[Roboto] text-[16px] leading-[26px] text-[#4D4D4D] flex gap-2">
+                    <span class="text-[#C8102E] font-bold mt-0.5" aria-hidden="true">▸</span>
+                    <span set:html={autoLink(b)} />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      </section>
+    )}
+
+    {/* Related services, same-category first, then top picks from other categories */}
+    <InternalLinksBlock
+      kicker="Related Services"
+      heading="Other Garage Door Services You Might Need"
+      intro="Explore the full range of expert garage door solutions we offer across Crestview and Okaloosa County."
+      links={relatedLinks}
+      columns={3}
+    />
+
+    {/* Service Area, single-location custom layout */}
+    <section class="bg-[#0F1117] text-white border-t-4 border-[#C8102E]">
+      <div class="mx-auto max-w-[1240px] px-5 lg:px-12 py-16 lg:py-20">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          <div class="lg:col-span-5">
+            <div class="font-[Bebas_Neue] text-[18px] uppercase tracking-[0.18em] text-[#C8102E]">Service Area</div>
+            <div class="mt-2 mb-5 h-[3px] w-12 bg-[#C8102E]" aria-hidden="true"></div>
+            <h2 class="font-[Bebas_Neue] text-[32px] sm:text-[40px] lg:text-[44px] leading-[1.08] uppercase font-medium">
+              {service.title} Across Okaloosa County
+            </h2>
+            <p class="mt-5 text-[16px] leading-[26px] text-white/80">
+              We come to you. Same-day {service.title.toLowerCase()} for homes and businesses across Crestview and surrounding cities. Local techs, free estimates, and we pick up the phone live 24/7.
+            </p>
+            <div class="mt-7 flex flex-wrap gap-3">
+              <a
+                href={`tel:${PHONE_TEL}`}
+                class="inline-flex items-center justify-center gap-2 bg-[#C8102E] text-white py-3 px-6 font-[Bebas_Neue] text-[16px] tracking-[0.1em] rounded-full border-2 border-[#C8102E] hover:bg-[#9A0A23] hover:border-[#9A0A23] transition-colors whitespace-nowrap"
+              >
+                <Icon name="phone" class="h-4 w-4" />
+                Call {PHONE_DISPLAY}
+              </a>
+              <a
+                href="/location/crestview/"
+                class="inline-flex items-center justify-center gap-2 bg-transparent text-white py-3 px-6 font-[Bebas_Neue] text-[16px] tracking-[0.1em] rounded-full border-2 border-white hover:bg-white hover:text-[#0F1117] transition-colors whitespace-nowrap"
+              >
+                View Service Area
+              </a>
+            </div>
+          </div>
+
+          <div class="lg:col-span-7">
+            <div class="bg-[#1A1D27] border border-white/10 rounded-lg p-6 sm:p-8">
+              <div class="font-[Bebas_Neue] text-[14px] uppercase tracking-[0.15em] text-white/60 mb-4">Cities We Cover</div>
+              <ul class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-2">
+                {SERVICE_AREA_CITIES.map((city) => (
+                  <li class="flex items-center gap-2 text-[15px] text-white">
+                    <span class="flex h-5 w-5 shrink-0 items-center justify-center bg-[#C8102E] text-white rounded-sm">
+                      <Icon name="map-pin" class="h-3 w-3" />
+                    </span>
+                    {city}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <CtaBannerSection />
+
+    {/* Service-specific FAQ */}
+    {faqSection && faqSection.qa.length > 0 && (
+      <section class="bg-[#F5F5F5]">
+        <div class="mx-auto max-w-[900px] px-5 lg:px-12 py-20">
+          <div class="text-center mb-10">
+            <h2 class="font-[Bebas_Neue] text-[42px] sm:text-[50px] lg:text-[55px] leading-[1] font-medium text-[#333333]">
+              {faqSection.heading}
+            </h2>
+            {faqSection.intro.map((p) => (
+              <p class="mt-4 font-[Roboto] text-[16px] leading-[26px] text-[#7A7A7A]" set:html={autoLink(p)} />
+            ))}
+          </div>
+          <div class="space-y-3">
+            {faqSection.qa.map((qa, i) => (
+              <details class="bg-white" open={i === 0}>
+                <summary class="w-full flex items-center justify-between gap-6 px-6 py-5 text-left cursor-pointer">
+                  <span class="font-[Bebas_Neue] text-[20px] sm:text-[22px] text-[#1D1D1D]">{qa.question}</span>
+                  <span class="faq-icon-wrap flex h-8 w-8 shrink-0 items-center justify-center text-white bg-[#1D1D1D]">
+                    <span class="faq-icon-plus text-[18px]">+</span>
+                    <span class="faq-icon-minus text-[18px]">−</span>
+                  </span>
+                </summary>
+                <div class="px-6 pb-6 -mt-1 font-[Roboto] text-[16px] leading-[26px] text-[#4D4D4D]" set:html={autoLink(qa.answer)} />
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <ContactSection />
+  </main>
+  <SiteFooter />
+</Layout>
