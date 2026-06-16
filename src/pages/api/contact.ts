@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro";
+import { checkBotId } from "botid/server";
 import {
   COMPANY,
   DOMAIN,
@@ -36,6 +37,21 @@ function phoneValid(s: string) {
 }
 
 export const POST: APIRoute = async ({ request }) => {
+  // Vercel BotID — invisible bot classification (verified server-side).
+  // Fail OPEN: if the BotID service/context is unavailable, never block a real
+  // lead — log and continue. Only a confident isBot verdict rejects.
+  try {
+    const verification = await checkBotId();
+    if (verification.isBot) {
+      return new Response(JSON.stringify({ error: "Access denied" }), {
+        status: 403,
+        headers: { "content-type": "application/json" },
+      });
+    }
+  } catch (err) {
+    console.warn("[api/contact] BotID check error:", err);
+  }
+
   let body: FormBody;
   let isNativeForm = false;
   try {

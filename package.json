@@ -19,6 +19,7 @@
     "@astrojs/vercel": "^9.0.5",
     "@tailwindcss/vite": "^4.1.0",
     "astro": "^5.18.1",
+    "botid": "^1.5.11",
     "tailwindcss": "^4.1.0"
   },
   "devDependencies": {

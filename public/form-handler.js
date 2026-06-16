@@ -1,13 +1,58 @@
 /**
  * Universal form handler.
  * - Auto-format phone XXX-XXX-XXXX while typing.
- * - Client-side validation (all required filled).
+ * - Client-side validation (required fields only; shows each problem + red field).
+ * - On error, offers a clickable "call us" fallback using the site's own phone.
  * - POSTs to same-origin /api/contact (server validates again + forwards to Zapier).
  *   Zapier hook URL is NEVER exposed to client (no window.__ZAPIER_HOOK__).
  * - On success: redirect to /thank-you/.
  */
 (() => {
   'use strict';
+
+  // Self-contained styles so the red invalid-field highlight + message box render
+  // on every site regardless of its own CSS. Injected once.
+  function injectStyles() {
+    if (document.getElementById('form-handler-styles')) return;
+    const style = document.createElement('style');
+    style.id = 'form-handler-styles';
+    style.textContent = `
+      .field-error { border: 2px solid #dc2626 !important; background-color: #fef2f2 !important; }
+      .form-message { margin-top: 0.75rem; padding: 0.75rem 1rem; border-radius: 0.5rem; font-size: 0.95rem; line-height: 1.45; }
+      .form-message-sending { background: #eff6ff; color: #1e40af; }
+      .form-message-success { background: #ecfdf5; color: #065f46; }
+      .form-message-error { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+      .form-message-error a { color: #b91c1c; font-weight: 700; text-decoration: underline; }
+      .form-message-call { display: block; margin-top: 0.4rem; }
+    `;
+    (document.head || document.documentElement).appendChild(style);
+  }
+
+  function escapeHtml(s) {
+    return (s || '').toString().replace(/[&<>"']/g, (c) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+  }
+
+  // Pull the site's phone from the first tel: link on the page (header call button).
+  function getSitePhone() {
+    const a = document.querySelector('a[href^="tel:"]');
+    if (!a) return null;
+    const href = a.getAttribute('href') || '';
+    const raw = href.replace(/^tel:/i, '').trim();
+    let text = (a.textContent || '').trim();
+    if (!/\d/.test(text)) {
+      const d = raw.replace(/[^\d]/g, '');
+      text = d.length === 10 ? `${d.slice(0, 3)}-${d.slice(3, 6)}-${d.slice(6)}` : raw;
+    }
+    return { href, text };
+  }
+
+  function callFallbackHtml() {
+    const p = getSitePhone();
+    if (!p) return '';
+    return `<span class="form-message-call">Or call us instead: <a href="${escapeHtml(p.href)}">${escapeHtml(p.text)}</a>.</span>`;
+  }
 
   function formatPhone(input) {
     const digits = (input.value || '').replace(/\D/g, '').slice(0, 10);
@@ -48,9 +93,10 @@
     return box;
   }
 
-  function showMessage(form, type, text) {
+  // `html` may contain markup we built ourselves (escaped where dynamic).
+  function showMessage(form, type, html) {
     const box = getMessageBox(form);
-    box.textContent = text;
+    box.innerHTML = html;
     box.className = `form-message form-message-${type}`;
   }
 
@@ -127,6 +173,23 @@
     return true;
   }
 
+  // Friendly label for an invalid field, preferring placeholder, then a nearby
+  // label, then the field name (asterisks/colons stripped).
+  function fieldLabel(el) {
+    const n = (el.name || '').toLowerCase();
+    // Phone/email get canonical labels — their placeholder is a format mask
+    // ("XXX-XXX-XXXX") that setupPhoneFormat forces, so it's never a good label.
+    if (isPhoneField(el)) return 'Phone number';
+    if ((el.type || '').toLowerCase() === 'email' || /email/.test(n)) return 'Email address';
+    let raw = el.placeholder || '';
+    if (!raw && el.id) {
+      const lbl = el.ownerDocument.querySelector(`label[for="${el.id}"]`);
+      if (lbl) raw = lbl.textContent || '';
+    }
+    if (!raw) raw = el.getAttribute('aria-label') || el.name || 'This field';
+    return raw.replace(/[*:]/g, '').trim() || 'This field';
+  }
+
   function validateForm(form) {
     let firstInvalid = null;
     const errors = [];
@@ -140,21 +203,30 @@
 
       el.classList.remove('field-error');
       const v = (el.value || '').trim();
+      // Core contact fields are always required (matches the server contract),
+      // even on WPCF7 markup that omits the `required` attribute. Name/phone/email.
+      const isCore =
+        /^(fullname|name|full_name)$/.test(n) ||
+        /phone/.test(n) || (el.type || '').toLowerCase() === 'tel' ||
+        /email/.test(n) || (el.type || '').toLowerCase() === 'email';
+      const isRequired = isCore || el.hasAttribute('required') || el.getAttribute('aria-required') === 'true';
       if (!v) {
-        errors.push(`${el.placeholder || el.name || 'Field'} is required`);
-        if (!firstInvalid) firstInvalid = el;
-        el.classList.add('field-error');
-        return;
+        if (isRequired) {
+          errors.push(`${fieldLabel(el)} is required`);
+          if (!firstInvalid) firstInvalid = el;
+          el.classList.add('field-error');
+        }
+        return; // empty optional field: nothing more to validate
       }
       if (el.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
-        errors.push('Email looks invalid');
+        errors.push('Please enter a valid email address');
         if (!firstInvalid) firstInvalid = el;
         el.classList.add('field-error');
       }
       if (isPhoneField(el)) {
         const d = v.replace(/\D/g, '');
         if (d.length < 10) {
-          errors.push('Phone needs 10 digits');
+          errors.push('Phone number needs 10 digits');
           if (!firstInvalid) firstInvalid = el;
           el.classList.add('field-error');
         }
@@ -164,6 +236,7 @@
   }
 
   function init() {
+    injectStyles();
     const forms = document.querySelectorAll('form.wpcf7-form, form.elementor-form, form[data-zapier], form.contact-form');
     forms.forEach(form => {
       if (form.dataset.handlerWired === '1') return;
@@ -177,7 +250,8 @@
 
         const { valid, errors, firstInvalid } = validateForm(form);
         if (!valid) {
-          showMessage(form, 'error', errors[0] || 'Please complete all fields.');
+          const list = errors.map(x => `• ${escapeHtml(x)}`).join('<br>');
+          showMessage(form, 'error', `Please fix the following:<br>${list}${callFallbackHtml()}`);
           if (firstInvalid) firstInvalid.focus();
           return;
         }
@@ -186,7 +260,7 @@
         try {
           payload = buildPayload(form);
         } catch (err) {
-          showMessage(form, 'error', 'Please complete all required fields.');
+          showMessage(form, 'error', `Please complete all required fields (name, phone, email).${callFallbackHtml()}`);
           return;
         }
 
@@ -213,7 +287,7 @@
           setTimeout(() => { window.location.href = '/thank-you/'; }, 800);
         } catch (err) {
           console.error('[form-handler]', err);
-          showMessage(form, 'error', 'Submit failed. Please call us directly.');
+          showMessage(form, 'error', `Sorry, your message couldn't be sent right now.${callFallbackHtml()}`);
         } finally {
           disableForm(form, false);
           form.dataset.submitting = '';
