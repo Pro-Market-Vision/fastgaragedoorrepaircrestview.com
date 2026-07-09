@@ -48,7 +48,7 @@ export const PHONE_TEL = "+18509202243";
 export const COMPANY = "Fast Garage Door Repair & Service Crestview";
 export const TAGLINE = "Fast, Reliable, Affordable";
 export const DOMAIN = "fastgaragedoorrepaircrestview.com";
-export const ADDRESS = "1455 S Ferdon Blvd D4, Crestview, FL 32536";
+export const ADDRESS = "100% mobile. We drive straight to your driveway.";
 export const GBP_CID = "4382157912592646255";
 export const GBP_URL = "https://maps.google.com/maps?cid=4382157912592646255";
 
@@ -69,7 +69,6 @@ export const LOCATIONS: Location[] = [
     state: "FL",
     phoneDisplay: "(850) 920-2243",
     phoneTel: "+18509202243",
-    address: "1455 S Ferdon Blvd D4, Crestview, FL 32536",
     seoSections: [
       {
         heading: "Garage Door Repair & Service Across Crestview, FL",
@@ -81,7 +80,7 @@ export const LOCATIONS: Location[] = [
       {
         heading: "Why Crestview Homeowners Call Us First",
         paragraphs: [
-          "We're based right on S Ferdon Blvd, so when you call we're rolling out of our shop and onto your driveway, not driving up from Pensacola or Fort Walton. Most spring breaks, snapped cables, and dead openers get diagnosed and fixed in a single visit because our trucks carry the most common torsion springs, rollers, hinges, opener boards, and remote replacements.",
+          "We're 100% mobile and based in Crestview, so when you call we drive straight to your driveway, not up from Pensacola or Fort Walton. Most spring breaks, snapped cables, and dead openers get diagnosed and fixed in a single visit because our trucks carry the most common torsion springs, rollers, hinges, opener boards, and remote replacements.",
           "Pricing is upfront. We quote before we touch the door and offer free estimates on every job. No upsells, no scare tactics, no \"the whole motor needs replacing\" when a sensor fixes it.",
         ],
       },
