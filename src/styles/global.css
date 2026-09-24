@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* sticky header height, measured per breakpoint: heroes size themselves against it */
+:root { --hdr: 151px; }
+@media (min-width: 640px) { :root { --hdr: 151px; } }
+
 @theme {
   --font-sans: "Roboto", ui-sans-serif, system-ui, sans-serif;
   --font-heading: "Bebas Neue", "Roboto", sans-serif;
