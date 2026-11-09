@@ -1,4 +1,110 @@
+# fastgaragedoorrepaircrestview.com
+# Open to every search engine and to AI crawlers.
+
 User-agent: *
 Allow: /
 
 Sitemap: https://fastgaragedoorrepaircrestview.com/sitemap-index.xml
+
+# AI crawlers and answer engines, each named explicitly.
+# A crawler that matches its own group ignores `User-agent: *` entirely, so every
+# Disallow from that group is repeated below. Naming them also puts the permission
+# on the record: a later edit to the wildcard group cannot quietly revoke AI access.
+
+# OpenAI
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# Anthropic
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# Google and Bing AI surfaces
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Google-CloudVertexBot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Apple
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Meta
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: Meta-ExternalFetcher
+Allow: /
+
+# Amazon, DuckDuckGo, Mistral, Cohere
+User-agent: Amazonbot
+Allow: /
+
+User-agent: DuckAssistBot
+Allow: /
+
+User-agent: MistralAI-User
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+# Training and index corpora
+User-agent: CCBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: AI2Bot
+Allow: /
+
+User-agent: Timpibot
+Allow: /
+
+User-agent: Omgilibot
+Allow: /
+
+User-agent: Diffbot
+Allow: /
+
+User-agent: ImagesiftBot
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+User-agent: Webzio-Extended
+Allow: /
+
+# llms.txt for AI model context
+# https://fastgaragedoorrepaircrestview.com/llms.txt   (not published yet)
