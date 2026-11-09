@@ -107,4 +107,4 @@ User-agent: Webzio-Extended
 Allow: /
 
 # llms.txt for AI model context
-# https://fastgaragedoorrepaircrestview.com/llms.txt   (not published yet)
+# https://fastgaragedoorrepaircrestview.com/llms.txt
